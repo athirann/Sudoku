@@ -35,20 +35,26 @@ public class Generateur {
         for (int i = 0; i < TAILLE; i++) {
             for (int j = 0; j < TAILLE; j++) {
                 int aleeeeeaaaatoire;
+                boolean viol = true;
                 do {
                     aleeeeeaaaatoire = random.nextInt(9) + 1;
                     // System.out.println(aleeeeeaaaatoire);
+                  //  if (!validation(grille, i, j, aleeeeeaaaatoire)) {
+                   //     viol = false; // Si un chiffre ne respecte pas les règles, la ligne n'est pas valide
+                    //    effacerlaligneeeee(grille, i);
+                       
+                    //    break; // Sortir de la boucle car la ligne est invalide
+                   // }
                 } while (!validation(grille, i, j, aleeeeeaaaatoire));
                 grille[i][j] = aleeeeeaaaatoire;
                 System.out.print(grille[i][j] + " ");
-
             }
             System.out.println();
         }
 
     }
 
-    // CHUI TROPPPPPPPP FORTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT ..... **sa ma pris 2min a faire xD...
+    
     public static boolean validation(int[][] grille, int ligne, int colonne, int heheha) {
 
         // System.out.println("coucou");
@@ -64,10 +70,9 @@ public class Generateur {
             }
         }
 
-
         int hehehaligne = ligne - ligne % 3;
         int hehehacolonne = colonne - colonne % 3;
-        
+
         for (int i = hehehaligne; i < hehehaligne + 3; i++) {
             for (int j = hehehacolonne; j < hehehacolonne + 3; j++) {
                 if (grille[i][j] == heheha) {
@@ -76,8 +81,16 @@ public class Generateur {
             }
         }
 
-
         return true;
+    }
+
+    public static void effacerlaligneeeee(int [][] grille, int ligne){
+        for (int j =0; j< TAILLE; j++){
+            grille[ligne][j]=0;
+
+        } 
+
+
     }
 
     public static void main(String[] args) {
