@@ -35,16 +35,9 @@ public class Generateur {
         for (int i = 0; i < TAILLE; i++) {
             for (int j = 0; j < TAILLE; j++) {
                 int aleeeeeaaaatoire;
-                boolean viol = true;
                 do {
                     aleeeeeaaaatoire = random.nextInt(9) + 1;
                     // System.out.println(aleeeeeaaaatoire);
-                  //  if (!validation(grille, i, j, aleeeeeaaaatoire)) {
-                   //     viol = false; // Si un chiffre ne respecte pas les règles, la ligne n'est pas valide
-                    //    effacerlaligneeeee(grille, i);
-                       
-                    //    break; // Sortir de la boucle car la ligne est invalide
-                   // }
                 } while (!validation(grille, i, j, aleeeeeaaaatoire));
                 grille[i][j] = aleeeeeaaaatoire;
                 System.out.print(grille[i][j] + " ");
@@ -58,6 +51,8 @@ public class Generateur {
     public static boolean validation(int[][] grille, int ligne, int colonne, int heheha) {
 
         // System.out.println("coucou");
+
+
         for (int i = 0; i < TAILLE; i++) {
             if (grille[ligne][i] == heheha) {
                 return false;
@@ -80,7 +75,6 @@ public class Generateur {
                 }
             }
         }
-
         return true;
     }
 
