@@ -35,23 +35,38 @@ public class Generateur {
         for (int i = 0; i < TAILLE; i++) {
             for (int j = 0; j < TAILLE; j++) {
                 int aleeeeeaaaatoire;
+                int tentative = 0;
                 do {
                     aleeeeeaaaatoire = random.nextInt(9) + 1;
-                    // System.out.println(aleeeeeaaaatoire);
+
+                   // System.out.println(tentative);
+
+                    tentative++;
+                    
+                    if (i>1 && tentative >= 10 && validation(grille, i, j, aleeeeeaaaatoire) == false ) {
+                        effacerlaligneeeee(grille, i);
+                        tentative = 0;
+                        
+
+                    }
                 } while (!validation(grille, i, j, aleeeeeaaaatoire));
                 grille[i][j] = aleeeeeaaaatoire;
+
+                if (grille[i][j] != 0){
                 System.out.print(grille[i][j] + " ");
+                } else {
+                    
+                }
             }
+
             System.out.println();
         }
 
     }
 
-    
     public static boolean validation(int[][] grille, int ligne, int colonne, int heheha) {
 
         // System.out.println("coucou");
-
 
         for (int i = 0; i < TAILLE; i++) {
             if (grille[ligne][i] == heheha) {
@@ -78,11 +93,15 @@ public class Generateur {
         return true;
     }
 
-    public static void effacerlaligneeeee(int [][] grille, int ligne){
-        for (int j =0; j< TAILLE; j++){
-            grille[ligne][j]=0;
+    public static void effacerlaligneeeee(int[][] grille, int ligne) {
 
-        } 
+        for (int i = 0; i < grille[ligne].length; i++) {
+            grille[ligne][i] = 0;
+   System.out.print(grille[ligne][i] + " ");
+        }
+
+        System.out.println();
+
 
 
     }
