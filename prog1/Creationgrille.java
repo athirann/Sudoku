@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -58,19 +60,40 @@ public class Creationgrille extends JFrame {
            if(confirmation == JFileChooser.APPROVE_OPTION){
             File selection = grillechargé.getSelectedFile();
 
-            affichage();
-           } else {
-            System.out.println("Aucun fichier sélectionner");
-           }
-
-
+try {
+                Scanner scanner = new Scanner(selection);
+                for (int i = 0; i < TAILLE; i++) {
+                    for (int j = 0; j < TAILLE; j++) {
+                        if (scanner.hasNextInt()) {
+                            grille[i][j] = scanner.nextInt();
+                        } 
+                    }
+                }
+                // Rafraîchir l'affichage de la grille
+                refreshGrid();
+                scanner.close();
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            System.out.println("Aucun fichier sélectionné");
         }
+    }
+
        });
     
 
 
        fenetre.add(chargerfichier, BorderLayout.NORTH);
         fenetre.add(panneau, BorderLayout.CENTER);
+    }
+
+
+    public static void refreshGrid() {
+        fenetre.getContentPane().removeAll(); // Supprimer tous les composants de la fenêtre
+        affichage(); // Réafficher la grille mise à jour
+        fenetre.revalidate(); // Valider les modifications apportées à la fenêtre
+        fenetre.repaint(); // Rafraîchir l'affichage de la fenêtre
     }
 
 }
