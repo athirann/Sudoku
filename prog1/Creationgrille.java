@@ -1,10 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.Color;
 
 public class Creationgrille extends JFrame {
 
@@ -24,32 +22,113 @@ public class Creationgrille extends JFrame {
     public static void affichage() {
         JPanel panneau = new JPanel();
         panneau.setLayout(new GridLayout(TAILLE, TAILLE));
-        /**
-         * grille = new int[][] {
-         * { 5, 3, 0, 0, 7, 0, 0, 0, 0 },
-         * { 6, 0, 0, 1, 9, 5, 0, 0, 0 },
-         * { 0, 9, 8, 0, 0, 0, 0, 6, 0 },
-         * { 8, 0, 0, 0, 6, 0, 0, 0, 3 },
-         * { 4, 0, 0, 8, 0, 3, 0, 0, 1 },
-         * { 7, 0, 0, 0, 2, 0, 0, 0, 6 },
-         * { 0, 6, 0, 0, 0, 0, 2, 8, 0 },
-         * { 0, 0, 0, 4, 1, 9, 0, 0, 5 },
-         * { 0, 0, 0, 0, 8, 0, 0, 7, 9 }
-         * };
-         */
+
+        JTextField[][] textFields = new JTextField[TAILLE][TAILLE];
+        grille = new int[TAILLE][TAILLE];
 
         for (int i = 0; i < TAILLE; i++) {
+
             for (int j = 0; j < TAILLE; j++) {
+
                 JTextField on_insere = new JTextField();
                 on_insere.setHorizontalAlignment(JTextField.CENTER);
+
                 if (grille[i][j] != 0) {
                     on_insere.setText(Integer.toString(grille[i][j]));
                 }
+
+                textFields[i][j] = on_insere;
+
                 panneau.add(on_insere);
             }
         }
 
-        fenetre.add(panneau, BorderLayout.CENTER);
+        DocumentListener coco = new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                lecture(textFields);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                lecture(textFields);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                lecture(textFields);
+            }
+
+            public void lecture(JTextField[][] textFields) {
+                for (int i = 0; i < TAILLE; i++) {
+                    for (int j = 0; j < TAILLE; j++) {
+                        String hehe = textFields[i][j].getText();
+
+                        try {
+
+                            int valeur = Integer.parseInt(hehe);
+                            grille[i][j] = valeur;
+
+                            if (!validation(grille, i, j, valeur)) {
+                                textFields[i][j].setBackground(Color.RED);
+                                System.out.println("Ya un doublon heheha");
+                            } else {
+                                // Sinon, remettre la couleur de fond par défaut (blanc)
+                                textFields[i][j].setBackground(Color.WHITE);
+                            }
+
+                        } catch (NumberFormatException ex) {
+                            // System.out.println("coco");
+                            textFields[i][j].setBackground(Color.WHITE);
+                        }
+
+                    }
+                }
+
+            }
+
+        };
+
+        for (int i = 0; i < TAILLE; i++) {
+            for (int j = 0; j < TAILLE; j++) {
+                textFields[i][j].getDocument().addDocumentListener(coco);
+            }
+        }
+        fenetre.add(panneau);
+    }
+
+    public static boolean validation(int[][] grille, int ligne, int colonne, int valeur) {
+        for (int i = 0; i < grille[ligne].length; i++) {
+            if (i != colonne && grille[ligne][i] == valeur) {
+                return false;
+            }
+        }
+
+        for (int i = 0; i < grille.length; i++) {
+            if (i != ligne && grille[i][colonne] == valeur) {
+                return false;
+            }
+
+        }
+
+        int hehehaligne = ligne - ligne % 3;
+        int hehehacolonne = colonne - colonne % 3;
+
+        for (int i = hehehaligne; i < hehehaligne + 3; i++) {
+            for (int j = hehehacolonne; j < hehehacolonne + 3; j++) {
+
+                if (i == ligne && j == colonne) {
+                    continue;
+                }
+
+                if (grille[i][j] == valeur) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
 }
