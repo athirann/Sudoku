@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.Color;
 
 public class Creationgrille extends JFrame {
 
@@ -20,8 +19,16 @@ public class Creationgrille extends JFrame {
     }
 
     public static void affichage() {
+
+        
+
+
+
         JPanel panneau = new JPanel();
         panneau.setLayout(new GridLayout(TAILLE, TAILLE));
+        JButton boutonFichier = new JButton("Choisir un fichier");
+        panneau.add(boutonFichier);
+
 
         JTextField[][] textFields = new JTextField[TAILLE][TAILLE];
         grille = new int[TAILLE][TAILLE];
