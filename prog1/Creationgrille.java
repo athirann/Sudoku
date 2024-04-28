@@ -1,7 +1,12 @@
+import compo.Fichier;
+
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import java.io.IOException;
+import java.io.File.*;
 
 public class Creationgrille extends JFrame {
 
@@ -13,25 +18,43 @@ public class Creationgrille extends JFrame {
         fenetre = new JFrame("Creation de grille");
         fenetre.setSize(500, 500);
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        grilleazero();
         affichage();
         fenetre.setVisible(true);
 
     }
 
+    public static void grilleazero() {
+        grille = new int[TAILLE][TAILLE]; // Create a new grid
+        for (int i = 0; i < TAILLE; i++) {
+            for (int j = 0; j < TAILLE; j++) {
+                grille[i][j] = 0; // Initialize all cells to 0
+            }
+        }
+    }
+
     public static void affichage() {
- fenetre.setLayout(new BorderLayout()); 
+        fenetre.setLayout(new BorderLayout());
         JPanel barre = new JPanel();
         JButton charger = new JButton("Choisir un fichier");
+
+        charger.addActionListener(e -> {
+            try {
+                Fichier.ouvrir(fenetre, grille);
+            } catch (IOException ex) {
+                System.out.println("Erreur lors de l'ouverture du Fichier");
+            }
+        });
+
         JButton sauvegarder = new JButton("Sauvegarder cette grille");
         barre.add(charger);
         barre.add(sauvegarder);
 
-
         JPanel panneau = new JPanel();
         panneau.setLayout(new GridLayout(TAILLE, TAILLE));
 
-    
         JTextField[][] textFields = new JTextField[TAILLE][TAILLE];
+
         grille = new int[TAILLE][TAILLE];
 
         for (int i = 0; i < TAILLE; i++) {
@@ -103,9 +126,11 @@ public class Creationgrille extends JFrame {
                 textFields[i][j].getDocument().addDocumentListener(coco);
             }
         }
-        fenetre.add(panneau,BorderLayout.CENTER);
-        fenetre.add(barre,BorderLayout.NORTH);
+        fenetre.add(panneau, BorderLayout.CENTER);
+        fenetre.add(barre, BorderLayout.NORTH);
     }
+
+    // Faire de cette fonction en classe plus tard ..
 
     public static boolean validation(int[][] grille, int ligne, int colonne, int valeur) {
         for (int i = 0; i < grille[ligne].length; i++) {

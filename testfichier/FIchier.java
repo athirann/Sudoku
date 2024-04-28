@@ -8,8 +8,8 @@ public class FIchier {
         File file = new File("exemple.gri");
         FileInputStream fis = new FileInputStream(file);
         FileChannel channel = fis.getChannel();
-        ByteBuffer buffer = ByteBuffer.allocate(4);  
-        buffer.order(ByteOrder.BIG_ENDIAN);  
+        ByteBuffer buffer = ByteBuffer.allocate(4);
+        buffer.order(ByteOrder.BIG_ENDIAN);
 
         while (channel.read(buffer) != -1) {
             buffer.flip();
@@ -20,5 +20,6 @@ public class FIchier {
 
         channel.close();
         fis.close();
+
     }
 }
