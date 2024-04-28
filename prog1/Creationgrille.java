@@ -19,17 +19,18 @@ public class Creationgrille extends JFrame {
     }
 
     public static void affichage() {
-
-        
-
+ fenetre.setLayout(new BorderLayout()); 
+        JPanel barre = new JPanel();
+        JButton charger = new JButton("Choisir un fichier");
+        JButton sauvegarder = new JButton("Sauvegarder cette grille");
+        barre.add(charger);
+        barre.add(sauvegarder);
 
 
         JPanel panneau = new JPanel();
         panneau.setLayout(new GridLayout(TAILLE, TAILLE));
-        JButton boutonFichier = new JButton("Choisir un fichier");
-        panneau.add(boutonFichier);
 
-
+    
         JTextField[][] textFields = new JTextField[TAILLE][TAILLE];
         grille = new int[TAILLE][TAILLE];
 
@@ -102,7 +103,8 @@ public class Creationgrille extends JFrame {
                 textFields[i][j].getDocument().addDocumentListener(coco);
             }
         }
-        fenetre.add(panneau);
+        fenetre.add(panneau,BorderLayout.CENTER);
+        fenetre.add(barre,BorderLayout.NORTH);
     }
 
     public static boolean validation(int[][] grille, int ligne, int colonne, int valeur) {
