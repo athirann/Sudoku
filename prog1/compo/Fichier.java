@@ -12,7 +12,7 @@ import java.nio.ByteOrder;
 
 public class Fichier {
 
-    public static void ouvrir(JFrame fenetre, int[][] grille) throws IOException {
+    public static void ouvrir(JFrame fenetre, int[][] grille, JTextField[][] textFields) throws IOException {
         JFileChooser ouvrir = new JFileChooser();
         int verif = ouvrir.showOpenDialog(null);
         if (verif == JFileChooser.APPROVE_OPTION) {
@@ -25,6 +25,7 @@ public class Fichier {
             while (i < 9 && channel.read(buffer) != -1) {
                 buffer.flip();
                 grille[i][j] = buffer.getInt();
+                textFields[i][j].setText(Integer.toString(grille[i][j])); 
                 j++;
                 buffer.clear();
                 if (j == 9) {

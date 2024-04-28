@@ -37,10 +37,11 @@ public class Creationgrille extends JFrame {
         fenetre.setLayout(new BorderLayout());
         JPanel barre = new JPanel();
         JButton charger = new JButton("Choisir un fichier");
+        JTextField[][] textFields = new JTextField[TAILLE][TAILLE];
 
         charger.addActionListener(e -> {
             try {
-                Fichier.ouvrir(fenetre, grille);
+                Fichier.ouvrir(fenetre, grille, textFields);
             } catch (IOException ex) {
                 System.out.println("Erreur lors de l'ouverture du Fichier");
             }
@@ -53,7 +54,6 @@ public class Creationgrille extends JFrame {
         JPanel panneau = new JPanel();
         panneau.setLayout(new GridLayout(TAILLE, TAILLE));
 
-        JTextField[][] textFields = new JTextField[TAILLE][TAILLE];
 
         grille = new int[TAILLE][TAILLE];
 
