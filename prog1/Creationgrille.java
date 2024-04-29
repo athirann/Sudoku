@@ -1,4 +1,5 @@
 import compo.Fichier;
+import compo.Validation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,6 +49,15 @@ public class Creationgrille extends JFrame {
         });
 
         JButton sauvegarder = new JButton("Sauvegarder cette grille");
+
+            sauvegarder.addActionListener( e -> {
+                try {
+                    Fichier.sauvegarder(fenetre);
+                } catch (IOException ex){
+                    System.out.println("Impossible de sauvegarder");
+                }
+            });
+
         barre.add(charger);
         barre.add(sauvegarder);
 
@@ -101,7 +111,7 @@ public class Creationgrille extends JFrame {
                             int valeur = Integer.parseInt(hehe);
                             grille[i][j] = valeur;
 
-                            if (!validation(grille, i, j, valeur)) {
+                            if (!Validation.Validation(grille, i, j, valeur)) {
                                 textFields[i][j].setBackground(Color.RED);
                                 System.out.println("Ya un doublon heheha");
                             } else {
@@ -132,37 +142,5 @@ public class Creationgrille extends JFrame {
 
     // Faire de cette fonction en classe plus tard ..
 
-    public static boolean validation(int[][] grille, int ligne, int colonne, int valeur) {
-        for (int i = 0; i < grille[ligne].length; i++) {
-            if (i != colonne && grille[ligne][i] == valeur) {
-                return false;
-            }
-        }
-
-        for (int i = 0; i < grille.length; i++) {
-            if (i != ligne && grille[i][colonne] == valeur) {
-                return false;
-            }
-
-        }
-
-        int hehehaligne = ligne - ligne % 3;
-        int hehehacolonne = colonne - colonne % 3;
-
-        for (int i = hehehaligne; i < hehehaligne + 3; i++) {
-            for (int j = hehehacolonne; j < hehehacolonne + 3; j++) {
-
-                if (i == ligne && j == colonne) {
-                    continue;
-                }
-
-                if (grille[i][j] == valeur) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
+    //anciennement la fonction validation elle est actuellement en classe
 }
