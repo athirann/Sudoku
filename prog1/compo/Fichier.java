@@ -30,10 +30,9 @@ public class Fichier {
             int i = 0, j = 0;
             while (i < 9 && channel.read(buffer) != -1) {
                 buffer.flip();
-                byte b = buffer.get();
-                int digit = b;
-                grille[i][j] = digit;
-                textFields[i][j].setText(Integer.toString(digit)); 
+                int valeur = buffer.getInt();
+                grille[i][j] = valeur;
+                textFields[i][j].setText(Integer.toString(valeur)); 
                 j++;
                 buffer.clear();
                 if (j == 9) {
