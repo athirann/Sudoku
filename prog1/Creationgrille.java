@@ -49,6 +49,15 @@ public class Creationgrille extends JFrame {
         });
 
         JButton sauvegarder = new JButton("Sauvegarder cette grille");
+
+            sauvegarder.addActionListener( e -> {
+                try {
+                    Fichier.sauvegarder(fenetre);
+                } catch (IOException ex){
+                    System.out.println("Impossible de sauvegarder");
+                }
+            });
+
         barre.add(charger);
         barre.add(sauvegarder);
 

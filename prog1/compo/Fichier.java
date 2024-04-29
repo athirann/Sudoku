@@ -43,9 +43,10 @@ public class Fichier {
 
     }
 
-    public static void sauvegarder  (JFrame fenetre){
+    public static void sauvegarder  (JFrame fenetre) throws IOException {
         JFileChooser sauvegarder = new JFileChooser();
         int verif =  sauvegarder.showSaveDialog(null);
+        sauvegarder.setFileFilter(gri);
 
 
     }
