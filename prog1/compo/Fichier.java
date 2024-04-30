@@ -56,7 +56,11 @@ public class Fichier {
         int verif = sauvegarder.showSaveDialog(null);
         File fichier = sauvegarder.getSelectedFile();
         String nomdufichier = fichier.getName();
-        System.out.println(nomdufichier);
+
+        
+
+
+
 
     }
 
