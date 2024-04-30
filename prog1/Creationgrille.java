@@ -75,6 +75,8 @@ public class Creationgrille extends JFrame {
 
                 if (grille[i][j] != 0) {
                     on_insere.setText(Integer.toString(grille[i][j]));
+                } else {
+                    on_insere.setText("");
                 }
 
                 textFields[i][j] = on_insere;
