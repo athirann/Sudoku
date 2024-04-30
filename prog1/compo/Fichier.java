@@ -63,8 +63,8 @@ public class Fichier {
             ByteBuffer buffer = ByteBuffer.allocate(4);
             buffer.order(ByteOrder.BIG_ENDIAN);
 
-            for (int i = 0; i <= 8; i++) {
-                for(int j = 0; j<= 8;j++){
+            for (int i = 8; i >= 0; i--) {
+                for(int j = 8; j>= 0;j--){
                 int valeur = Integer.parseInt(textFields[i][j].getText());
                 buffer.putInt(valeur);
                 buffer.flip();
