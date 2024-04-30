@@ -19,8 +19,6 @@ public class Fichier {
         ouvrir.addChoosableFileFilter(filtre);
         ouvrir.setAcceptAllFileFilterUsed(false);
         int verif = ouvrir.showOpenDialog(null);
-        // String nom = "Choisisez une grille";
-        // ouvrir.setDialogTitle(nom); a voir pour plustard
         if (verif == JFileChooser.APPROVE_OPTION) {
             File fichierchoisi = ouvrir.getSelectedFile();
             FileInputStream entre = new FileInputStream(fichierchoisi);
