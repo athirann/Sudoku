@@ -26,10 +26,10 @@ public class Creationgrille extends JFrame {
     }
 
     public static void grilleazero() {
-        grille = new int[TAILLE][TAILLE]; // Create a new grid
+        grille = new int[TAILLE][TAILLE];
         for (int i = 0; i < TAILLE; i++) {
             for (int j = 0; j < TAILLE; j++) {
-                grille[i][j] = 0; // Initialize all cells to 0
+                grille[i][j] = 0;
             }
         }
     }
@@ -50,13 +50,13 @@ public class Creationgrille extends JFrame {
 
         JButton sauvegarder = new JButton("Sauvegarder cette grille");
 
-            sauvegarder.addActionListener( e -> {
-                try {
-                    Fichier.sauvegarder(fenetre);
-                } catch (IOException ex){
-                    System.out.println("Impossible de sauvegarder");
-                }
-            });
+        sauvegarder.addActionListener(e -> {
+            try {
+                Fichier.sauvegarder(fenetre);
+            } catch (IOException ex) {
+                System.out.println("Impossible de sauvegarder");
+            }
+        });
 
         barre.add(charger);
         barre.add(sauvegarder);
@@ -64,8 +64,7 @@ public class Creationgrille extends JFrame {
         JPanel panneau = new JPanel();
         panneau.setLayout(new GridLayout(TAILLE, TAILLE));
 
-
-        grille = new int[TAILLE][TAILLE];
+        // grille = new int[TAILLE][TAILLE];
 
         for (int i = 0; i < TAILLE; i++) {
 
@@ -115,7 +114,7 @@ public class Creationgrille extends JFrame {
                                 textFields[i][j].setBackground(Color.RED);
                                 System.out.println("Ya un doublon heheha");
                             } else {
-                                // Sinon, remettre la couleur de fond par défaut (blanc)
+
                                 textFields[i][j].setBackground(Color.WHITE);
                             }
 
@@ -142,5 +141,5 @@ public class Creationgrille extends JFrame {
 
     // Faire de cette fonction en classe plus tard ..
 
-    //anciennement la fonction validation elle est actuellement en classe
+    // anciennement la fonction validation elle est actuellement en classe
 }
