@@ -28,27 +28,17 @@ public class Fichier {
             ByteBuffer buffer = ByteBuffer.allocate(4);
             buffer.order(ByteOrder.BIG_ENDIAN);
 
-            for (int i = 0; i <= 9; i++) {
+            for (int i = 0; i <= 8; i++) {
                 channel.read(buffer);
                 buffer.flip();
                 int valeur = buffer.getInt();
                 String nbr = Integer.toString(valeur);
-                int k = 0;
-                if (nbr.length() < 9) {
-
-                    textFields[i][k].setText("0");
-                    k++;
-
+                while (nbr.length() < 9) {
+                    nbr = "0" + nbr;
                 }
+                for (int j = 0; j <= 8; j++) {
+                    textFields[i][j].setText(String.valueOf(nbr.charAt(j)));
 
-                for (int j = 0; j <= 9; j++) {
-                    // buffer.flip();
-                    if (textFields[i][j].equals("0")) {
-                        j++;
-                    } else {
-
-                        textFields[i][j].setText(String.valueOf(nbr.charAt(j)));
-                    }
                 }
                 buffer.clear();
             }
@@ -59,8 +49,6 @@ public class Fichier {
         }
 
     }
-    // String nbr = Integer.toString(valeur);
-    // char chiffre = nbr.charAt(1);
 
     public static void sauvegarder(JFrame fenetre) throws IOException {
         JFileChooser sauvegarder = new JFileChooser();
