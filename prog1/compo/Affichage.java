@@ -119,7 +119,7 @@ public class Affichage {
                              */
 
                             if (grille[i][j] != 0 && bouton == 2) {
-                                // textFields[i][j].setEditable(false);
+                                //textFields[i][j].setEditable(false);
                                 /// textFields[i][j].setBackground(Color.LIGHT_GRAY);
                             }
 
