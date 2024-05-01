@@ -55,10 +55,9 @@ public class Affichage {
             barre.add(Ouvrir);
         }
 
+        // Pour crée la grille
         JPanel panneau = new JPanel();
         panneau.setLayout(new GridLayout(TAILLE, TAILLE));
-
-        // grille = new int[TAILLE][TAILLE];
 
         for (int i = 0; i < TAILLE; i++) {
 
@@ -67,17 +66,23 @@ public class Affichage {
                 JTextField on_insere = new JTextField();
                 on_insere.setHorizontalAlignment(JTextField.CENTER);
 
-                if (grille[i][j] != 0) {
-                    on_insere.setText(Integer.toString(grille[i][j]));
-                } else {
-                    on_insere.setText("");
-                }
+                /**
+                 * if (grille[i][j] != 0) {
+                 * on_insere.setText(Integer.toString(grille[i][j]));
+                 * on_insere.setEditable(false);
+                 * } else {
+                 * on_insere.setText("");
+                 * }
+                 * 
+                 */
 
                 textFields[i][j] = on_insere;
 
                 panneau.add(on_insere);
             }
         }
+
+        // Les Listerner qui detecter a chaque fois que un chiffre est inserer
 
         DocumentListener coco = new DocumentListener() {
 
@@ -95,6 +100,8 @@ public class Affichage {
             public void changedUpdate(DocumentEvent e) {
                 lecture(textFields);
             }
+
+            // Permet d'ajouter le chiffre a la grille
 
             public void lecture(JTextField[][] textFields) {
                 for (int i = 0; i < TAILLE; i++) {
@@ -125,7 +132,7 @@ public class Affichage {
             }
 
         };
-
+        // Pour les Listerner.
         for (int i = 0; i < TAILLE; i++) {
             for (int j = 0; j < TAILLE; j++) {
                 textFields[i][j].getDocument().addDocumentListener(coco);
