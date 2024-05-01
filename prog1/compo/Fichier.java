@@ -34,8 +34,12 @@ public class Fichier {
                     nbr = "0" + nbr;
                 }
                 for (int j = 0; j <= 8; j++) {
-                    textFields[i][j].setText(String.valueOf(nbr.charAt(j)));
-
+                    char charAtPosition = nbr.charAt(j);
+                    if (charAtPosition == '0') {
+                        textFields[i][j].setText("");
+                    } else {
+                        textFields[i][j].setText(String.valueOf(charAtPosition));
+                    }
                 }
                 buffer.clear();
             }

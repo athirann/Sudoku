@@ -66,20 +66,19 @@ public class Affichage {
                 JTextField on_insere = new JTextField();
                 on_insere.setHorizontalAlignment(JTextField.CENTER);
 
-                /**
-                 * if (grille[i][j] != 0) {
-                 * on_insere.setText(Integer.toString(grille[i][j]));
-                 * on_insere.setEditable(false);
-                 * } else {
-                 * on_insere.setText("");
-                 * }
-                 * 
-                 */
+                if (grille[i][j] != 0) {
+                    on_insere.setText(Integer.toString(grille[i][j]));
+                    on_insere.setEditable(false);
+                } else {
+                    on_insere.setText("");
+                }
 
                 textFields[i][j] = on_insere;
 
                 panneau.add(on_insere);
             }
+            panneau.revalidate();
+            panneau.repaint();
         }
 
         // Les Listerner qui detecter a chaque fois que un chiffre est inserer
@@ -138,6 +137,7 @@ public class Affichage {
                 textFields[i][j].getDocument().addDocumentListener(coco);
             }
         }
+
         fenetre.add(panneau, BorderLayout.CENTER);
         fenetre.add(barre, BorderLayout.NORTH);
     }
