@@ -12,7 +12,7 @@ public class SudokuFichierLis {
             int i = 0;
             String donnee;
             while ((donnee = reader.readLine()) != null && i < 9) {
-                donnee = padZeros(donnee);//on rajoute des 0 devant les chiffre ou yen a pas
+                donnee = padZeros(donnee); //on rajoute des 0 devant les chiffre ou yen a pas
                 for (int j = 0; j < 9; j++) {
                     char c = donnee.charAt(j);
                         int num = Character.getNumericValue(c);

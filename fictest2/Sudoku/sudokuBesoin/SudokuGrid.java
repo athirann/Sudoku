@@ -1,7 +1,7 @@
 package sudokuBesoin;
 
 public class SudokuGrid {
-    private int[][] grid;
+    public int[][] grid;
 
     public SudokuGrid(int[][] grid) {
         this.grid = grid;
