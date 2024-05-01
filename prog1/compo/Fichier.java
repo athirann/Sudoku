@@ -18,6 +18,7 @@ public class Fichier {
         ouvrir.addChoosableFileFilter(filtre);
         ouvrir.setAcceptAllFileFilterUsed(false);
         int verif = ouvrir.showOpenDialog(null);
+
         if (verif == JFileChooser.APPROVE_OPTION) {
             File fichierchoisi = ouvrir.getSelectedFile();
             FileInputStream entre = new FileInputStream(fichierchoisi);
@@ -30,10 +31,13 @@ public class Fichier {
                 buffer.flip();
                 int valeur = buffer.getInt();
                 String nbr = Integer.toString(valeur);
+                // permet d'ajouter des 0 au debut si la ligne contient moin de 9 chiffre
                 while (nbr.length() < 9) {
                     nbr = "0" + nbr;
                 }
+
                 for (int j = 0; j <= 8; j++) {
+                    // permet de retirer les 0 de la grille
                     char charAtPosition = nbr.charAt(j);
                     if (charAtPosition == '0') {
                         textFields[i][j].setText("");

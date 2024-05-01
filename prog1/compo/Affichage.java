@@ -66,13 +66,6 @@ public class Affichage {
                 JTextField on_insere = new JTextField();
                 on_insere.setHorizontalAlignment(JTextField.CENTER);
 
-                if (grille[i][j] != 0) {
-                    on_insere.setText(Integer.toString(grille[i][j]));
-                    on_insere.setEditable(false);
-                } else {
-                    on_insere.setText("");
-                }
-
                 textFields[i][j] = on_insere;
 
                 panneau.add(on_insere);
@@ -118,6 +111,11 @@ public class Affichage {
                             } else {
 
                                 textFields[i][j].setBackground(Color.WHITE);
+                            }
+
+                            if (grille[i][j] != 0 && bouton == 2) {
+                                textFields[i][j].setEditable(false);
+                                textFields[i][j].setBackground(Color.LIGHT_GRAY);
                             }
 
                         } catch (NumberFormatException ex) {
