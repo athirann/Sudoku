@@ -113,9 +113,14 @@ public class Affichage {
                                 textFields[i][j].setBackground(Color.WHITE);
                             }
 
+                            /*
+                             * Eviter de modifier les chiffre qui sont deja present dans la grille elle ne
+                             * s'applique que pour la resolution de la grille grace a la variable "bouton".
+                             */
+
                             if (grille[i][j] != 0 && bouton == 2) {
-                                textFields[i][j].setEditable(false);
-                                textFields[i][j].setBackground(Color.LIGHT_GRAY);
+                                // textFields[i][j].setEditable(false);
+                                /// textFields[i][j].setBackground(Color.LIGHT_GRAY);
                             }
 
                         } catch (NumberFormatException ex) {
