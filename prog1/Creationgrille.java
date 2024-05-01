@@ -52,7 +52,7 @@ public class Creationgrille extends JFrame {
 
         sauvegarder.addActionListener(e -> {
             try {
-                Fichier.sauvegarder(fenetre,textFields);
+                Fichier.sauvegarder(fenetre, textFields);
             } catch (IOException ex) {
                 System.out.println("Impossible de sauvegarder");
             }
