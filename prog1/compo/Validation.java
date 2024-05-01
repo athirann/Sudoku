@@ -1,8 +1,8 @@
 package compo;
 
 // Cette classe permet de verifier cette l'unicité de la grille
-public class Validation{
-    
+public class Validation {
+
     public static boolean Validation(int[][] grille, int ligne, int colonne, int valeur) {
         for (int i = 0; i < grille[ligne].length; i++) {
             if (i != colonne && grille[ligne][i] == valeur) {
@@ -36,5 +36,4 @@ public class Validation{
         return true;
     }
 
-    
 }
