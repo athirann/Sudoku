@@ -109,8 +109,11 @@ public class Affichage {
                                 textFields[i][j].setBackground(Color.RED);
                                 System.out.println("Ya un doublon heheha");
                             } else {
-
-                                textFields[i][j].setBackground(Color.WHITE);
+                                if (bouton == 2) {
+                                    textFields[i][j].setBackground(Color.GRAY);
+                                    textFields[i][j].setEditable(false);
+                                }
+                               
                             }
 
                             /*
@@ -118,13 +121,7 @@ public class Affichage {
                              * s'applique que pour la resolution de la grille grace a la variable "bouton".
                              */
 
-                            if (grille[i][j] != 0 && bouton == 2) {
-                                //textFields[i][j].setEditable(false);
-                                /// textFields[i][j].setBackground(Color.LIGHT_GRAY);
-                            }
-
                         } catch (NumberFormatException ex) {
-                            // System.out.println("coco");
                             textFields[i][j].setBackground(Color.WHITE);
                         }
 
