@@ -111,7 +111,7 @@ public class Affichage {
                             } else {
                                 if (bouton == 2) {
                                     textFields[i][j].setBackground(Color.GRAY);
-                                    textFields[i][j].setEditable(false);
+                                    //textFields[i][j].setEditable(false);
                                 }
                                
                             }
