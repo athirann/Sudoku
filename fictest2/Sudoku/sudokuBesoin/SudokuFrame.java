@@ -12,6 +12,7 @@ public class SudokuFrame extends JFrame {
     private SudokuGridPanel sudokuPanel;
     private SudokuFichierLis fileHandler;
     private JButton[] buttons;
+    public Boolean[] buttonsClicked;
     private JButton[] buttonUtils;
     private JPanel buttonPanel = new JPanel();
     private JPanel buttonUtilsPanel = new JPanel();
@@ -26,6 +27,8 @@ public class SudokuFrame extends JFrame {
         setVisible(true);
     }
 
+    
+
     private void initComponents() {
         fileHandler = new SudokuFichierLis();
         int[][] grid;
@@ -35,6 +38,7 @@ public class SudokuFrame extends JFrame {
             System.err.println("Erreur lors de la lecture du fichier : " + ex.getMessage());
             return;
         }
+        buttonsClicked = new Boolean[9];
 
         sudokuPanel = new SudokuGridPanel(grid);
         sudokuPanel.displayGrid(grid);
@@ -66,6 +70,8 @@ public class SudokuFrame extends JFrame {
             buttons[i] = new JButton(Integer.toString(i + 1));
             buttons[i].addMouseListener(new CustomMouseListener());
             buttonPanel.add(buttons[i]);
+            
+            buttonsClicked[i] = false;
             buttons[i].setPreferredSize(new Dimension(50, 20));
         }
 
@@ -78,11 +84,24 @@ public class SudokuFrame extends JFrame {
         centerPanel.add(SouthButtonUtilsPanel, BorderLayout.SOUTH);
     }
 
+    
+
     class CustomMouseListener extends MouseAdapter {
+
+
         public void mouseClicked(MouseEvent e) {
-            JButton button = (JButton)e.getSource();
-            System.out.println("Clicked: " + button.getText());
-            
+            Object source = e.getSource();
+            for(int i =0; i<9; i++){
+                if(source.equals(buttons[i])){
+                    buttonsClicked[i] = true;
+                    System.out.println("test de fonctionnalité");
+                }
+            }
         }
     }
+
+    public Boolean[] getButtonsClicked() {
+        return buttonsClicked;
+    }
+
 }

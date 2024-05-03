@@ -1,30 +1,86 @@
 package sudokuBesoin;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class SudokuGridPanel extends JPanel {
+public class SudokuGridPanel extends JFrame {
     private JLabel[][] cases;
-    
+    private Boolean[] buttonsClicked;
+    private JButton[] buttons;
+    private JPanel sudokuPanel;
+    private JPanel buttonPanel;
+    private JPanel buttonUtilsPanel;
+    private JPanel SouthButtonUtilsPanel;
 
     public SudokuGridPanel(int[][] grid) {
-        super(new GridLayout(9, 9));
-        setPreferredSize(new Dimension(400, 400));
-        
+        setTitle("Sudoku");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        initComponents(grid);
+
+        setSize(900, 800);
+        setLocation(500, 200);
+        setVisible(true);
+    }
+
+    private void initComponents(int[][] grid) {
         cases = new JLabel[9][9];
-        Font font = new Font("Arial", Font.PLAIN, 20); 
+        buttonsClicked = new Boolean[9];
+        buttons = new JButton[9];
+
+        sudokuPanel = new JPanel(new GridLayout(9, 9));
+        sudokuPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        buttonPanel = new JPanel(new GridLayout(3, 3, 15, 15));
+        buttonPanel.setBorder(new EmptyBorder(90, 150, 90, 100));
+
+        buttonUtilsPanel = new JPanel(new GridLayout(1, 3, 5, 5));
+        buttonUtilsPanel.setBorder(new EmptyBorder(75, 50, 75, 50));
+
+        SouthButtonUtilsPanel = new JPanel(new GridLayout(1, 3, 5, 5));
+        SouthButtonUtilsPanel.setBorder(new EmptyBorder(75, 50, 75, 50));
+
+
+        
+
+        JButton ajoutButton = new JButton("Ajouter");
+        JButton supprimerButton = new JButton("Supprimer");
+        JButton sauvegarderButton = new JButton("Sauvegarder");
+
+        ajoutButton.addMouseListener(new CustomMouseListener());
+        supprimerButton.addMouseListener(new CustomMouseListener());
+        sauvegarderButton.addMouseListener(new CustomMouseListener());
+
+        buttonUtilsPanel.add(ajoutButton);
+        buttonUtilsPanel.add(supprimerButton);
+        SouthButtonUtilsPanel.add(sauvegarderButton);
+
+
+
+
+        for (int i = 0; i < 9; i++) {
+            buttonsClicked[i] = false;
+            buttons[i] = new JButton(Integer.toString(i + 1));
+            buttons[i].addMouseListener(new CustomMouseListener());
+            buttonPanel.add(buttons[i]);
+            buttons[i].setPreferredSize(new Dimension(50, 20));
+        }
+
+        Font font = new Font("Arial", Font.PLAIN, 20);
         Color lightBlue = new Color(170, 191, 205);
-        Color darkerBlue = new Color(140, 161, 175); 
+        Color darkerBlue = new Color(140, 161, 175);
         boolean isLight = true;
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 cases[i][j] = new JLabel();
                 cases[i][j].setFont(font);
+                cases[i][j].addMouseListener(new CustomMouseListener());
                 cases[i][j].setHorizontalAlignment(SwingConstants.CENTER);
-                cases[i][j].setOpaque(true); 
-                
+                cases[i][j].setOpaque(true);
+
                 if (isLight) {
                     cases[i][j].setBackground(lightBlue);
                 } else {
@@ -41,35 +97,96 @@ public class SudokuGridPanel extends JPanel {
                     cases[i][j].setBorder(BorderFactory.createMatteBorder(0, 0, 3, 3, Color.BLACK));
                 }
 
-                // Ajout d'un MouseListener à chaque JLabel
-                cases[i][j].addMouseListener(new CustomMouseListener());
-
-                add(cases[i][j]);
-                isLight = !isLight; 
+                sudokuPanel.add(cases[i][j]);
+                isLight = !isLight;
             }
 
             if (9 % 2 == 0) {
                 isLight = !isLight;
             }
         }
+        displayGrid(grid);
 
-        
+        add(sudokuPanel, BorderLayout.CENTER);
+        add(buttonUtilsPanel, BorderLayout.NORTH);
+        add(buttonPanel, BorderLayout.EAST);
+        add(SouthButtonUtilsPanel, BorderLayout.SOUTH);
     }
 
-    public void displayGrid(int[][] grid) {
+    private void displayGrid(int[][] grid) {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (grid[i][j] != 0) {
+                if(grid[i][j]!=0){
                     cases[i][j].setText(Integer.toString(grid[i][j]));
                 }
+                
             }
         }
     }
 
     class CustomMouseListener extends MouseAdapter {
+
+
         public void mouseClicked(MouseEvent e) {
-            JLabel label = (JLabel)e.getSource();
-            System.out.println("Clicked: " + label.getText());
+            Object source = e.getSource();
+
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+
+                    if (source.equals(cases[i][j])) {
+
+                        for (int x = 0; x < 9; x++) {
+                            if(buttonsClicked[x]){
+                                cases[i][j].setText(Integer.toString(x + 1));
+                                    
+                            }
+                                    
+                        }
+                    
+                }
+            }
+
+
+
+            for (int x = 0; x < 9; x++) {
+                if (source.equals(buttons[x])) {
+                    buttonsClicked[x] = true;
+                    System.out.println("test de fonctionnalité button num : "+(x+1)+"est à " +buttonsClicked[x]);
+                }
+            }
+
+
+
+        }
+
+
+
+
+
+
+        }
         }
     }
-}
+
+
+    /* 
+
+    class CustomMouseListener extends MouseAdapter {
+        public void mouseClicked(MouseEvent e) {
+            Object source = e.getSource();
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    if (source.equals(cases[i][j])) {
+                        for (int x = 0; x < 9; x++) {
+                            if (buttonsClicked[x]) {
+                                cases[i][j].setText(Integer.toString(x + 1));
+                                System.out.println("test de ");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+}*/
