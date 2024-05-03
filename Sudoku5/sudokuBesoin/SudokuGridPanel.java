@@ -16,8 +16,8 @@ public class SudokuGridPanel extends JFrame {
     private JPanel SouthButtonUtilsPanel;
     private Color bleu_marine = new Color(0, 0, 100);
     private boolean isLight = true;
-    private Color lightBlue = new Color(170, 191, 205);
-    private Color darkerBlue = new Color(140, 161, 175);
+    private JButton[] buttonsUtils = new JButton[5];
+    private Boolean[] buttonsUtilsClicked = new Boolean[5];
 
     public SudokuGridPanel(int[][] grid) {
         setTitle("Sudoku");
@@ -48,8 +48,7 @@ public class SudokuGridPanel extends JFrame {
         SouthButtonUtilsPanel.setBorder(new EmptyBorder(75, 50, 75, 50));
 
 
-        JButton[] buttonsUtils = new JButton[5];
-        Boolean[] buttonsUtilsClicked = new Boolean[5];
+        
 
         buttonsUtils[0] = new JButton("Ajouter");
         buttonsUtils[1] = new JButton("Supprimer");
@@ -159,10 +158,20 @@ public class SudokuGridPanel extends JFrame {
                         for (int j = 0; j < 9; j++) {
                             if (clickedLabel.equals(cases[i][j])) {
                                 for (int x = 0; x < 9; x++) {
-                                    if (buttonsClicked[x]) {
-                                        if (isValidToAdd(i, j, x + 1)) {
-                                            cases[i][j].setText(Integer.toString(x + 1));
+
+                                    if(buttonsUtilsClicked[1]){
+                                        cases[i][j].setText("");
+                                    }
+
+
+                                    else if (buttonsClicked[x]) {
+
+                                        if(buttonsUtilsClicked[0]){
+                                            if (isValidToAdd(i, j, x + 1)) {
+                                                cases[i][j].setText(Integer.toString(x + 1));
+                                            }
                                         }
+                                        
                                         
                                         
                                         buttonsClicked[x] = !buttonsClicked[x];
@@ -184,8 +193,19 @@ public class SudokuGridPanel extends JFrame {
                                 }
                             }
 
+                            if (clickedButton.equals(buttonsUtils[0])) {
+                                buttonsUtilsClicked[0] = !buttonsUtilsClicked[0]; 
+                            }
 
+                            if (clickedButton.equals(buttonsUtils[1])) {
+                                buttonsUtilsClicked[1] = !buttonsUtilsClicked[1]; 
+                                
+                            }
 
+                            if (clickedButton.equals(buttonsUtils[3])) {
+                                buttonsUtilsClicked[3] = !buttonsUtilsClicked[3]; 
+                                
+                            }
             }
         }
 
