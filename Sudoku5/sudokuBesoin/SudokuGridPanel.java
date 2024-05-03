@@ -90,6 +90,7 @@ public class SudokuGridPanel extends JFrame {
                 cases[i][j].addMouseListener(new CustomMouseListener());
                 cases[i][j].setHorizontalAlignment(SwingConstants.CENTER);
                 cases[i][j].setOpaque(true);
+                
 
                 if (isLight) {
                     cases[i][j].setBackground(lightBlue);
@@ -161,21 +162,41 @@ public class SudokuGridPanel extends JFrame {
 
                                     if(buttonsUtilsClicked[1]){
                                         cases[i][j].setText("");
+                                        
                                     }
 
 
                                     else if (buttonsClicked[x]) {
 
                                         if(buttonsUtilsClicked[0]){
+                                            
                                             if (isValidToAdd(i, j, x + 1)) {
                                                 cases[i][j].setText(Integer.toString(x + 1));
                                             }
                                         }
+
+
+                                        else if (buttonsUtilsClicked[3]) {
+                                            if (cases[i][j].getText().length() < 3) {
+                                                cases[i][j].setFont(new Font("Arial", Font.PLAIN, 10));
+                                                cases[i][j].setText("[" + (x + 1) + "]");
+                                            } else {
+                                                String currentText = cases[i][j].getText();
+                                                if (currentText.length() + 6 < 15) {
+                                                    if (currentText.length() < 6) {
+                                                        cases[i][j].setText(currentText + " [" + (x + 1) + "]");
+                                                    } else {
+                                                        cases[i][j].setText("<html>" + currentText + "<br>[" + (x + 1) + "]</html>");
+                                                    }
+                                                }
+                                            }
+                                        }
                                         
                                         
-                                        
-                                        buttonsClicked[x] = !buttonsClicked[x];
                                     }
+
+
+
                                 }
                             }
                         }
@@ -189,7 +210,11 @@ public class SudokuGridPanel extends JFrame {
 
                             for (int x = 0; x < 9; x++) {
                                 if (clickedButton.equals(buttons[x])) {
-                                    buttonsClicked[x] = !buttonsClicked[x];
+                                    for(int i = 0; i < 9; i++) {
+                                        buttonsClicked[i] = false;
+                                    }
+
+                                    buttonsClicked[x] = true;
                                 }
                             }
 
@@ -206,6 +231,9 @@ public class SudokuGridPanel extends JFrame {
 
                             if (clickedButton.equals(buttonsUtils[3])) {
                                 buttonsUtilsClicked[3] = !buttonsUtilsClicked[3]; 
+                                buttonsUtilsClicked[1] = false; 
+                                buttonsUtilsClicked[0] = false; 
+                                
                                 
                             }
             }
@@ -233,7 +261,12 @@ public class SudokuGridPanel extends JFrame {
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
                     String text = cases[i][j].getText();
-                    grid[i][j] = text.isEmpty() ? 0 : Integer.parseInt(text);
+
+                    if (!text.isEmpty() && text.length() == 1) {
+                        grid[i][j] = Integer.parseInt(text);
+                    } else {
+                        grid[i][j] = 0; 
+                    }
                 }
             }
             return grid;
@@ -242,6 +275,7 @@ public class SudokuGridPanel extends JFrame {
         
     }
 
+/*Methode pour resoudre la grille afin de n'avoir qu'un resultat possible et de la comparer aux entrée de l'utilisateur */
     public static int[][] solve(int[][] grid) {
         SudokuGrid sudoku = new SudokuGrid(grid);
         sudoku.solveSudoku();
