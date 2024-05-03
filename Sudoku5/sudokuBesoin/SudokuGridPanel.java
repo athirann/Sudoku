@@ -9,6 +9,7 @@ public class SudokuGridPanel extends JFrame {
     private JLabel[][] cases;
     private Boolean[] buttonsClicked;
     private JButton[] buttons;
+    private int[][] solvedGrid;
     private JPanel sudokuPanel;
     private JPanel buttonPanel;
     private JPanel buttonUtilsPanel;
@@ -111,6 +112,14 @@ public class SudokuGridPanel extends JFrame {
         }
         displayGrid(grid);
 
+        solvedGrid = solve(grid);
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                    System.out.println(solvedGrid[i][j]);
+            }
+        }
+
         add(sudokuPanel, BorderLayout.CENTER);
         add(buttonUtilsPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.EAST);
@@ -132,10 +141,12 @@ public class SudokuGridPanel extends JFrame {
 
 
         public void mouseClicked(MouseEvent e) {
+
             Object source = e.getSource();
-        
+
             if (source instanceof JLabel) {
                 JLabel clickedLabel = (JLabel) source;
+
                 for (int i = 0; i < 9; i++) {
                     for (int j = 0; j < 9; j++) {
                         if (clickedLabel.equals(cases[i][j])) {
@@ -152,6 +163,7 @@ public class SudokuGridPanel extends JFrame {
                     }
                 }
             }
+
             
             else if (source instanceof JButton) {
                 JButton clickedButton = (JButton) source;
@@ -183,6 +195,14 @@ public class SudokuGridPanel extends JFrame {
             }
             return grid;
         }
+
+        
+    }
+
+    public static int[][] solve(int[][] grid) {
+        SudokuGrid sudoku = new SudokuGrid(grid);
+        sudoku.solveSudoku();
+        return sudoku.grille;
     }
 }
 
