@@ -96,22 +96,25 @@ public class Affichage {
             // Permet d'ajouter le chiffre a la grille
 
             public void lecture(JTextField[][] textFields) {
+                
                 for (int i = 0; i < TAILLE; i++) {
                     for (int j = 0; j < TAILLE; j++) {
+                        textFields[i][j].setEditable(true);
+
                         String hehe = textFields[i][j].getText();
 
                         try {
 
                             int valeur = Integer.parseInt(hehe);
                             grille[i][j] = valeur;
-
                             if (!Validation.Validation(grille, i, j, valeur)) {
                                 textFields[i][j].setBackground(Color.RED);
+                                textFields[i][j].setEditable(true);
                                 System.out.println("Ya un doublon heheha");
                             } else {
                                 if (bouton == 2) {
                                     textFields[i][j].setBackground(Color.GRAY);
-                                    //textFields[i][j].setEditable(false);
+                                    textFields[i][j].setEditable(true);
                                 }
                                
                             }
