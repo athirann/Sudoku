@@ -14,6 +14,10 @@ public class SudokuGridPanel extends JFrame {
     private JPanel buttonPanel;
     private JPanel buttonUtilsPanel;
     private JPanel SouthButtonUtilsPanel;
+    private Color bleu_marine = new Color(0, 0, 100);
+    private boolean isLight = true;
+    private Color lightBlue = new Color(170, 191, 205);
+    private Color darkerBlue = new Color(140, 161, 175);
 
     public SudokuGridPanel(int[][] grid) {
         setTitle("Sudoku");
@@ -44,23 +48,25 @@ public class SudokuGridPanel extends JFrame {
         SouthButtonUtilsPanel.setBorder(new EmptyBorder(75, 50, 75, 50));
 
 
-        
+        JButton[] buttonsUtils = new JButton[5];
+        Boolean[] buttonsUtilsClicked = new Boolean[5];
 
-        JButton ajoutButton = new JButton("Ajouter");
-        JButton supprimerButton = new JButton("Supprimer");
-        JButton sauvegarderButton = new JButton("Sauvegarder");
-        JButton notes = new JButton("Notes");
-        JButton OuvrireFic = new JButton("Ouvrire Fichier :");
+        buttonsUtils[0] = new JButton("Ajouter");
+        buttonsUtils[1] = new JButton("Supprimer");
+        buttonsUtils[2] = new JButton("Sauvegarder");
+        buttonsUtils[3] = new JButton("Notes");
+        buttonsUtils[4] = new JButton("Ouvrire Fichier :");
 
-        ajoutButton.addMouseListener(new CustomMouseListener());
-        supprimerButton.addMouseListener(new CustomMouseListener());
-        sauvegarderButton.addMouseListener(new CustomMouseListener());
+        for(int i =0;i<5;i++){
+            buttonsUtils[i].addMouseListener(new CustomMouseListener());
+            buttonsUtilsClicked[i] = false;
+        }
 
-        buttonUtilsPanel.add(ajoutButton);
-        buttonUtilsPanel.add(supprimerButton);
-        buttonUtilsPanel.add(notes);
-        SouthButtonUtilsPanel.add(OuvrireFic);
-        SouthButtonUtilsPanel.add(sauvegarderButton);
+        buttonUtilsPanel.add(buttonsUtils[0]);
+        buttonUtilsPanel.add(buttonsUtils[1]);
+        buttonUtilsPanel.add(buttonsUtils[3]);
+        SouthButtonUtilsPanel.add(buttonsUtils[4]);
+        SouthButtonUtilsPanel.add(buttonsUtils[2]);
 
 
 
@@ -76,7 +82,7 @@ public class SudokuGridPanel extends JFrame {
         Font font = new Font("Arial", Font.PLAIN, 20);
         Color lightBlue = new Color(170, 191, 205);
         Color darkerBlue = new Color(140, 161, 175);
-        boolean isLight = true;
+        
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
@@ -93,13 +99,13 @@ public class SudokuGridPanel extends JFrame {
                 }
 
                 if ((i + 1) % 3 == 0 && (i != 8)) {
-                    cases[i][j].setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.BLACK));
+                    cases[i][j].setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, bleu_marine));
                 }
                 if ((j + 1) % 3 == 0 && (j != 8)) {
-                    cases[i][j].setBorder(BorderFactory.createMatteBorder(0, 0, 0, 3, Color.BLACK));
+                    cases[i][j].setBorder(BorderFactory.createMatteBorder(0, 0, 0, 3, bleu_marine));
                 }
                 if (((i + 1) % 3 == 0 && (j + 1) % 3 == 0) && (i != 8 && j != 8)) {
-                    cases[i][j].setBorder(BorderFactory.createMatteBorder(0, 0, 3, 3, Color.BLACK));
+                    cases[i][j].setBorder(BorderFactory.createMatteBorder(0, 0, 3, 3, bleu_marine));
                 }
 
                 sudokuPanel.add(cases[i][j]);
@@ -116,8 +122,9 @@ public class SudokuGridPanel extends JFrame {
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                    System.out.println(solvedGrid[i][j]);
+                    System.out.print(solvedGrid[i][j]+" ");
             }
+            System.out.println("");
         }
 
         add(sudokuPanel, BorderLayout.CENTER);
@@ -131,6 +138,7 @@ public class SudokuGridPanel extends JFrame {
             for (int j = 0; j < 9; j++) {
                 if(grid[i][j]!=0){
                     cases[i][j].setText(Integer.toString(grid[i][j]));
+                    cases[i][j].setForeground(new Color(0, 0, 100)); 
                 }
                 
             }
@@ -147,31 +155,37 @@ public class SudokuGridPanel extends JFrame {
             if (source instanceof JLabel) {
                 JLabel clickedLabel = (JLabel) source;
 
-                for (int i = 0; i < 9; i++) {
-                    for (int j = 0; j < 9; j++) {
-                        if (clickedLabel.equals(cases[i][j])) {
-                            for (int x = 0; x < 9; x++) {
-                                if (buttonsClicked[x]) {
-                                    if (isValidToAdd(i, j, x + 1)) {
-                                        cases[i][j].setText(Integer.toString(x + 1));
+                    for (int i = 0; i < 9; i++) {
+                        for (int j = 0; j < 9; j++) {
+                            if (clickedLabel.equals(cases[i][j])) {
+                                for (int x = 0; x < 9; x++) {
+                                    if (buttonsClicked[x]) {
+                                        if (isValidToAdd(i, j, x + 1)) {
+                                            cases[i][j].setText(Integer.toString(x + 1));
+                                        }
                                         
+                                        
+                                        buttonsClicked[x] = !buttonsClicked[x];
                                     }
-                                    buttonsClicked[x] = !buttonsClicked[x];
                                 }
                             }
                         }
                     }
-                }
             }
 
             
             else if (source instanceof JButton) {
                 JButton clickedButton = (JButton) source;
-                for (int x = 0; x < 9; x++) {
-                    if (clickedButton.equals(buttons[x])) {
-                        buttonsClicked[x] = !buttonsClicked[x];
-                    }
-                }
+
+
+                            for (int x = 0; x < 9; x++) {
+                                if (clickedButton.equals(buttons[x])) {
+                                    buttonsClicked[x] = !buttonsClicked[x];
+                                }
+                            }
+
+
+
             }
         }
 
@@ -179,11 +193,18 @@ public class SudokuGridPanel extends JFrame {
             SudokuGrid tempGrid = new SudokuGrid(getCurrentGrid());
             try {
                 tempGrid.fixerValeurCellule(row, col, value);
-                return true;
             } catch (IllegalArgumentException e) {
                 return false;
             }
+
+            if (solvedGrid[row][col] != value) {
+                return false;
+            }
+
+            cases[row][col].setForeground(Color.BLUE);
+            return true;
         }
+        
     
         private int[][] getCurrentGrid() {
             int[][] grid = new int[9][9];
@@ -207,24 +228,3 @@ public class SudokuGridPanel extends JFrame {
 }
 
 
-    /* 
-
-    class CustomMouseListener extends MouseAdapter {
-        public void mouseClicked(MouseEvent e) {
-            Object source = e.getSource();
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                    if (source.equals(cases[i][j])) {
-                        for (int x = 0; x < 9; x++) {
-                            if (buttonsClicked[x]) {
-                                cases[i][j].setText(Integer.toString(x + 1));
-                                System.out.println("test de ");
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-}*/
