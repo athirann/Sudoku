@@ -1,38 +1,51 @@
 package sudokuBesoin;
 
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.ByteOrder;
+
+
 import java.io.*;
+
 
 public class SudokuFichierLis {
     public int[][] rameneLeSudoku(String filePath) throws IOException {
         int[][] grid = new int[9][9];
-        BufferedReader reader = null;
+        FileInputStream fileInputStream = null;
+        FileChannel channel = null;
         
         try {
-            reader = new BufferedReader(new FileReader(filePath));
-            int i = 0;
-            String donnee;
-            while ((donnee = reader.readLine()) != null && i < 9) {
-                donnee = padZeros(donnee); //on rajoute des 0 devant les chiffre ou yen a pas
-                for (int j = 0; j < 9; j++) {
-                    char c = donnee.charAt(j);
-                        int num = Character.getNumericValue(c);
-                        grid[i][j] = num;
+            fileInputStream = new FileInputStream(filePath);
+            channel = fileInputStream.getChannel();
+            ByteBuffer buffer = ByteBuffer.allocate(4); // Pour lire des entiers de 4 octets
+            buffer.order(ByteOrder.BIG_ENDIAN);
+
+            for (int i = 0; i < 9; i++) {
+                channel.read(buffer);
+                buffer.flip();
+                int valeur = buffer.getInt();
+                String nbr = Integer.toString(valeur);
+                // Ajoute des zéros au début si la ligne contient moins de 9 chiffres
+                while (nbr.length() < 9) {
+                    nbr = "0" + nbr;
                 }
-                i++;
+                for (int j = 0; j < 9; j++) {
+                    grid[i][j] = nbr.charAt(j) - '0'; // Convertit le caractère en chiffre et le stocke dans la grille
+                }
+                buffer.clear();
             }
         } finally {
-            if (reader != null) {
-                reader.close(); 
+            if (channel != null) {
+                channel.close();
+            }
+            if (fileInputStream != null) {
+                fileInputStream.close();
             }
         }
         
         return grid;
-    }
-    
-    private String padZeros(String donnee) {
-        while (donnee.length() < 9) {
-            donnee = "0" + donnee;
-        }
-        return donnee;
     }
 }

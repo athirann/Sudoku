@@ -82,7 +82,10 @@ public class Fichier {
                     buffer.flip();
                     channel.write(buffer);
                     buffer.clear();
+                    channel.write(ByteBuffer.wrap(System.getProperty("line.separator").getBytes()));
                 }
+
+
             }
 
         }
