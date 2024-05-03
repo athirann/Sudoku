@@ -195,10 +195,12 @@ public class SudokuGridPanel extends JFrame {
 
                             if (clickedButton.equals(buttonsUtils[0])) {
                                 buttonsUtilsClicked[0] = !buttonsUtilsClicked[0]; 
+                                buttonsUtilsClicked[1] = false; 
                             }
 
                             if (clickedButton.equals(buttonsUtils[1])) {
                                 buttonsUtilsClicked[1] = !buttonsUtilsClicked[1]; 
+                                buttonsUtilsClicked[0] = false; 
                                 
                             }
 
