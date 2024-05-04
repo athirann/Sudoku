@@ -20,7 +20,7 @@ public class SudokuFichierLis {
         try {
             fileInputStream = new FileInputStream(filePath);
             channel = fileInputStream.getChannel();
-            ByteBuffer buffer = ByteBuffer.allocate(4); // Pour lire des entiers de 4 octets
+            ByteBuffer buffer = ByteBuffer.allocate(4); 
             buffer.order(ByteOrder.BIG_ENDIAN);
 
             for (int i = 0; i < 9; i++) {
@@ -28,12 +28,12 @@ public class SudokuFichierLis {
                 buffer.flip();
                 int valeur = buffer.getInt();
                 String nbr = Integer.toString(valeur);
-                // Ajoute des zéros au début si la ligne contient moins de 9 chiffres
+
                 while (nbr.length() < 9) {
                     nbr = "0" + nbr;
                 }
                 for (int j = 0; j < 9; j++) {
-                    grid[i][j] = nbr.charAt(j) - '0'; // Convertit le caractère en chiffre et le stocke dans la grille
+                    grid[i][j] = nbr.charAt(j) - '0'; 
                 }
                 buffer.clear();
             }

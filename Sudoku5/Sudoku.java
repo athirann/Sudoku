@@ -1,24 +1,37 @@
 import sudokuBesoin.*;
+import javax.swing.*;
+
 
 public class Sudoku {
-    private SudokuFichierLis fileHandler;
-    private int[][] grid;
+    private int[][] grid = {
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0}
+    };
     private SudokuGridPanel sudokuGridPanel;
 
-    public Sudoku(){
-        fileHandler = new SudokuFichierLis();
-        
-        
-        try {
-            grid = fileHandler.rameneLeSudoku("exemple.gri");
-            sudokuGridPanel = new SudokuGridPanel(grid);
-        } catch (Exception ex) {
-            System.err.println("Erreur lors de la lecture du fichier : " + ex.getMessage());
-            return;
+    public Sudoku(boolean startWithEmptyGrid) {
+
+        if (!startWithEmptyGrid) {
+            sudokuGridPanel = new SudokuGridPanel(grid, true);
         }
+        sudokuGridPanel = new SudokuGridPanel(grid, false);
     }
+
     public static void main(String[] args) {
-        new Sudoku();
-        
+        Object[] options = {"Grille vide", "Ouvrir depuis un fichier"};
+        int choice = JOptionPane.showOptionDialog(null, "Choisissez une option :",
+                "Options de départ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                null, options, options[0]);
+
+        boolean startWithEmptyGrid = (choice == JOptionPane.YES_OPTION);
+        new Sudoku(startWithEmptyGrid);
     }
 }
+

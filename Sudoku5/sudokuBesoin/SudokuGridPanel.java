@@ -7,21 +7,10 @@ import java.awt.event.MouseEvent;
 
 public class SudokuGridPanel extends JFrame {
     private JLabel[][] cases;
+    private boolean loadedFromFile;
     private Boolean[] buttonsClicked;
     private JButton[] buttons;
-    private int[][] solvedGrids = {
-        {0, 0, 0, 1, 0, 0, 0, 5, 0},
-        {0, 5, 0, 0, 4, 0, 0, 0, 0},
-        {4, 7, 0, 0, 5, 2, 0, 0, 0},
-        {0, 0, 8, 0, 0, 4, 1, 3, 0},
-        {3, 0, 2, 0, 0, 9, 0, 7, 0},
-        {0, 9, 0, 3, 0, 0, 5, 0, 2},
-        {2, 0, 0, 0, 6, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 5, 0, 2, 1},
-        {6, 0, 0, 0, 3, 1, 0, 0, 0}
-    };
     private int[][] solvedGrid;
-    private int[][] solvedGrid2;
     private JPanel sudokuPanel;
     private JPanel buttonPanel;
     private JPanel buttonUtilsPanel;
@@ -31,8 +20,11 @@ public class SudokuGridPanel extends JFrame {
     private boolean isLight = true;
     private JButton[] buttonsUtils = new JButton[5];
     private Boolean[] buttonsUtilsClicked = new Boolean[5];
+    private SudokuValidator validator;
 
-    public SudokuGridPanel(int[][] grid) {
+
+    public SudokuGridPanel(int[][] grid, boolean loaded) {
+        loadedFromFile = loaded;
         setTitle("Sudoku");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -44,6 +36,8 @@ public class SudokuGridPanel extends JFrame {
     }
 
     private void initComponents(int[][] grid) {
+
+        
         cases = new JLabel[9][9];
         buttonsClicked = new Boolean[9];
         buttons = new JButton[9];
@@ -130,16 +124,10 @@ public class SudokuGridPanel extends JFrame {
             }
         }
         displayGrid(grid);
+        validator = new SudokuValidator(cases, solvedGrid);
 
         solvedGrid = solve(grid);
-        solvedGrid2 = solve(solvedGrids);
-
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                    System.out.print(solvedGrid2[i][j]+" ");
-            }
-            System.out.println("");
-        }
+        
 
         add(sudokuPanel, BorderLayout.CENTER);
         add(buttonUtilsPanel, BorderLayout.NORTH);
@@ -184,7 +172,7 @@ public class SudokuGridPanel extends JFrame {
 
                                         if(buttonsUtilsClicked[0]){
                                             
-                                            if (isValidToAdd(i, j, x + 1)) {
+                                            if (validator.isValidToAdd(i, j, x + 1, loadedFromFile)) {
                                                 cases[i][j].setFont(font);
                                                 cases[i][j].setText(Integer.toString(x + 1));
                                             }
@@ -196,20 +184,29 @@ public class SudokuGridPanel extends JFrame {
                                         else if (buttonsUtilsClicked[3]) {
                                             if (cases[i][j].getText().length() < 3) {
                                                 cases[i][j].setFont(new Font("Arial", Font.PLAIN, 10));
-                                                cases[i][j].setText("[" + (x + 1) + "]");
+                                                cases[i][j].setText("<html>[" + (x + 1) + "]");
+                                                System.out.println(cases[i][j].getText().length());
                                             } else {
                                                 String currentText = cases[i][j].getText();
-                                                if (currentText.length() + 6 < 15) {
-                                                    if (currentText.length() < 6) {
+
+                
+
+                                                if (currentText.length() < 21) {
+                                                    if (currentText.length() < 10) { 
+                                                        
                                                         cases[i][j].setText(currentText + " [" + (x + 1) + "]");
-                                                    } else if (currentText.length() == 7) {
-                                                        cases[i][j].setText("<html>" + currentText + "<br>[" + (x + 1) + "]");
-                                                    }else{
+                                                        
+                                                    } else if (currentText.length() == 13) {
+
+                                                        cases[i][j].setText(currentText + "<br>[" + (x + 1) + "]");
+                                                    } else {
+
                                                         cases[i][j].setText(currentText + " [" + (x + 1) + "]</html>");
                                                     }
                                                 }
                                             }
                                         }
+                                        
                                         
                                         
                                     }
@@ -258,38 +255,10 @@ public class SudokuGridPanel extends JFrame {
             }
         }
 
-        private boolean isValidToAdd(int row, int col, int value) {
-            SudokuGrid tempGrid = new SudokuGrid(getCurrentGrid());
-            try {
-                tempGrid.fixerValeurCellule(row, col, value);
-            } catch (IllegalArgumentException e) {
-                return false;
-            }
-
-            if (solvedGrid[row][col] != value) {
-                return false;
-            }
-
-            cases[row][col].setForeground(Color.BLUE);
-            return true;
-        }
+        
         
     
-        private int[][] getCurrentGrid() {
-            int[][] grid = new int[9][9];
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                    String text = cases[i][j].getText();
-
-                    if (!text.isEmpty() && text.length() == 1) {
-                        grid[i][j] = Integer.parseInt(text);
-                    } else {
-                        grid[i][j] = 0; 
-                    }
-                }
-            }
-            return grid;
-        }
+        
 
         
     }
