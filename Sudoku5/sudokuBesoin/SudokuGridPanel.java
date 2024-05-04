@@ -217,7 +217,9 @@ public class SudokuGridPanel extends JFrame {
 
                                 if (buttonsUtilsClicked[1]) {
                                     cases[i][j].setText("");
-
+                                    for (int k = 0; k < 9; k++) {
+                                        buttonsClicked[k] = false;
+                                    }
                                 }
 
                                 else if (buttonsClicked[x]) {
@@ -227,7 +229,11 @@ public class SudokuGridPanel extends JFrame {
                                         if (validator.isValidToAdd(i, j, x + 1, loadedFromFile)) {
                                             cases[i][j].setFont(font);
                                             cases[i][j].setText(Integer.toString(x + 1));
+                                            for (int k = 0; k < 9; k++) {
+                                                buttonsClicked[k] = false;
+                                            }
                                         }
+                                        buttonsClicked[x] = true;
 
                                     }
 
