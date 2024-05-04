@@ -70,6 +70,7 @@ public class SudokuGridPanel extends JFrame {
         buttonsUtils[3] = new JButton("Notes");
         buttonsUtils[4] = new JButton("Ouvrire Fichier :");
 
+        // Bouton qui qui permet d'ouvrir une fenetre de Jfilechooser pour sauvegarder
         buttonsUtils[2].addActionListener(e -> {
             JFileChooser sauvegarder = new JFileChooser();
             FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichier GRI", "gri");
@@ -100,13 +101,13 @@ public class SudokuGridPanel extends JFrame {
                         buffer.clear();
                     }
                 } catch (IOException ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Erreur lors de la sauvegarde de la grille", "Erreur",
-                            JOptionPane.ERROR_MESSAGE);
+                   System.out.println("erreur");
                 }
             }
         });
 
+        // Bouton qui qui permet d'ouvrir une fenetre de Jfilechooser pour ouvrir une
+        // grille.
         buttonsUtils[4].addActionListener(e ->
 
         {
