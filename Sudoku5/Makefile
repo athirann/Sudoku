@@ -24,8 +24,14 @@ sudokuBesoin/SudokuFichierLis.class: sudokuBesoin/SudokuFichierLis.java
 
 ### OPTIONAL RULES ###
 
-run: Sudoku.class
+run1: Sudoku.class
 	$(JVM) $(JVMFLAGS) -cp .:sudokuBesoin Sudoku
+
+run2: SudokuResolution.class
+	$(JVM) $(JVMFLAGS) -cp .:sudokuBesoin SudokuResolution
+
+SudokuResolution.class: SudokuResolution.java
+	$(JC) $(JCFLAGS) SudokuResolution.java
 
 clean:
 	-rm -f *.class sudokuBesoin/*.class
@@ -34,4 +40,4 @@ mrproper: clean Sudoku.class
 
 ### PHONY TARGETS ###
 
-.PHONY: run clean mrproper
+.PHONY: run clean mrproper make1
