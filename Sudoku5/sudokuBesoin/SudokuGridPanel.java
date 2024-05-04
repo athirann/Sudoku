@@ -84,22 +84,24 @@ public class SudokuGridPanel extends JFrame {
 
                 try (FileOutputStream sortie = new FileOutputStream(fichier);
                         FileChannel channel = sortie.getChannel()) {
-                    ByteBuffer buffer = ByteBuffer.allocate(81);
+                    ByteBuffer buffer = ByteBuffer.allocate(4); // Allocate buffer to hold a single integer.
                     buffer.order(ByteOrder.BIG_ENDIAN);
 
-                    for (int i = 0; i < 9; i++) {
-                        for (int j = 0; j < 9; j++) {
+                    for (int i = 0; i <= 8; i++) {
+                        int valeur = 0;
+                        for (int j = 0; j <= 8; j++) {
                             String labelContent = cases[i][j].getText();
                             int digit = labelContent.isEmpty() ? 0 : Integer.parseInt(labelContent);
-                            buffer.put((byte) digit);
+                            valeur = valeur * 10 + digit; // Aggregate digits into an integer.
                         }
+                        buffer.putInt(valeur); // Place the integer value into the buffer.
+                        buffer.flip(); // Prepare buffer for writing.
+                        channel.write(buffer); // Write buffer to file channel.
+                        buffer.clear(); // Clear buffer for next iteration.
                     }
-
-                    buffer.flip();
-                    channel.write(buffer);
                 } catch (IOException ex) {
                     ex.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "Erreur lors de la sauvegarde de la grille", "Erreur",
+                    JOptionPane.showMessageDialog(null, "Erreur lors de la sauvegarde de la grille", "Erreur",
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
