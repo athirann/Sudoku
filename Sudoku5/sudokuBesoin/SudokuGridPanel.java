@@ -98,37 +98,39 @@ public class SudokuGridPanel extends JFrame {
     
         buttonsUtils[2].addActionListener(e -> {
             JFileChooser sauvegarder = new JFileChooser();
-        FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichier GRI", "gri");
-        sauvegarder.addChoosableFileFilter(filtre);
-        sauvegarder.setAcceptAllFileFilterUsed(false);
-        int verif = sauvegarder.showSaveDialog(null);
-        if (verif == JFileChooser.APPROVE_OPTION) {
-            File fichier = sauvegarder.getSelectedFile();
-            if (!fichier.getPath().endsWith(".gri")) {
-                fichier = new File(fichier.getPath() + ".gri");
-            }
-
-            try (FileOutputStream sortie = new FileOutputStream(fichier);
-                    FileChannel channel = sortie.getChannel()) {
-                ByteBuffer buffer = ByteBuffer.allocate(4);
-                buffer.order(ByteOrder.BIG_ENDIAN);
-
-                for (int i = 0; i <= 8; i++) {
-                    int valeur = 0;
-                    for (int j = 0; j <= 8; j++) {
-                        int digit = grid[i][j];
-                        valeur = valeur * 10 + digit;
-                    }
-                    buffer.putInt(valeur);
-                    buffer.flip();
-                    channel.write(buffer);
-                    buffer.clear();
+            FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichier GRI", "gri");
+            sauvegarder.addChoosableFileFilter(filtre);
+            sauvegarder.setAcceptAllFileFilterUsed(false);
+            int verif = sauvegarder.showSaveDialog(null);
+            if (verif == JFileChooser.APPROVE_OPTION) {
+                File fichier = sauvegarder.getSelectedFile();
+                if (!fichier.getPath().endsWith(".gri")) {
+                    fichier = new File(fichier.getPath() + ".gri");
                 }
-            } catch (IOException ex) {
-                System.out.println("erreur");
+
+                try (FileOutputStream sortie = new FileOutputStream(fichier);
+                        FileChannel channel = sortie.getChannel()) {
+                    ByteBuffer buffer = ByteBuffer.allocate(4);
+                    buffer.order(ByteOrder.BIG_ENDIAN);
+
+                    for (int i = 0; i <= 8; i++) {
+                        int valeur = 0;
+                        for (int j = 0; j <= 8; j++) {
+                            String labelContent = cases[i][j].getText();
+                            int digit = labelContent.isEmpty() ? 0 : Integer.parseInt(labelContent);
+                            valeur = valeur * 10 + digit;
+                        }
+                        buffer.putInt(valeur);
+                        buffer.flip();
+                        channel.write(buffer);
+                        buffer.clear();
+                    }
+                } catch (IOException ex) {
+                   System.out.println("erreur");
+                }
             }
-        }  
         });
+    
 
         // Bouton qui qui permet d'ouvrir une fenetre de Jfilechooser pour ouvrir une
         // grille.
