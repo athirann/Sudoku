@@ -115,9 +115,15 @@ public class SudokuGridPanel extends JFrame {
 
                     for (int i = 0; i <= 8; i++) {
                         int valeur = 0;
+                        int digit;
                         for (int j = 0; j <= 8; j++) {
                             String labelContent = cases[i][j].getText();
-                            int digit = labelContent.isEmpty() ? 0 : Integer.parseInt(labelContent);
+                            if(labelContent.length() > 1){
+                                digit = 0;
+                            }else{
+                                digit = labelContent.isEmpty() ? 0 : Integer.parseInt(labelContent);
+                            }
+                            
                             valeur = valeur * 10 + digit;
                         }
                         buffer.putInt(valeur);
