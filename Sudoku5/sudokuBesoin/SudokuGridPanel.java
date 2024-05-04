@@ -17,7 +17,6 @@ public class SudokuGridPanel extends JFrame {
     private boolean loadedFromFile;
     private Boolean[] buttonsClicked;
     private JButton[] buttons;
-    private int[][] solvedGrid;
     private int[][] newGrid = null;
     private JPanel sudokuPanel;
     private JPanel buttonPanel;
@@ -143,7 +142,6 @@ public class SudokuGridPanel extends JFrame {
         }
         
 
-        solvedGrid = solve(grid);
 
         add(sudokuPanel, BorderLayout.CENTER);
         add(buttonUtilsPanel, BorderLayout.NORTH);
@@ -185,8 +183,9 @@ public class SudokuGridPanel extends JFrame {
                                 else if (buttonsClicked[x]) {
 
                                     if (buttonsUtilsClicked[0]) {
-                                        cases[i][j].setFont(font);
+                                        
                                         if (validator.isValidToAdd(i, j, x + 1, loadedFromFile)) {
+                                            cases[i][j].setFont(font);
                                             cases[i][j].setText(Integer.toString(x + 1));
                                         }
 
@@ -261,13 +260,5 @@ public class SudokuGridPanel extends JFrame {
 
     }
 
-    /*
-     * Methode pour resoudre la grille afin de n'avoir qu'un resultat possible et de
-     * la comparer aux entrée de l'utilisateur
-     */
-    public static int[][] solve(int[][] grid) {
-        SudokuGrid sudoku = new SudokuGrid(grid);
-        sudoku.solveSudoku();
-        return sudoku.grille;
-    }
+    
 }

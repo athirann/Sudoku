@@ -28,6 +28,16 @@ public class SudokuGrid {
         return resoudre(0, 0);
     }
 
+    /*
+     * Methode pour resoudre la grille afin de n'avoir qu'un resultat possible et de
+     * la comparer aux entrée de l'utilisateur
+     */
+
+    public int[][] solve() {
+        solveSudoku();
+        return grille;
+    }
+
     private boolean resoudre(int ligne, int colonne) {
         if (ligne == 9) {
             return true;
