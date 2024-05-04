@@ -84,7 +84,7 @@ public class SudokuGridPanel extends JFrame {
 
                 try (FileOutputStream sortie = new FileOutputStream(fichier);
                         FileChannel channel = sortie.getChannel()) {
-                    ByteBuffer buffer = ByteBuffer.allocate(4); // Allocate buffer to hold a single integer.
+                    ByteBuffer buffer = ByteBuffer.allocate(4);
                     buffer.order(ByteOrder.BIG_ENDIAN);
 
                     for (int i = 0; i <= 8; i++) {
@@ -92,12 +92,12 @@ public class SudokuGridPanel extends JFrame {
                         for (int j = 0; j <= 8; j++) {
                             String labelContent = cases[i][j].getText();
                             int digit = labelContent.isEmpty() ? 0 : Integer.parseInt(labelContent);
-                            valeur = valeur * 10 + digit; // Aggregate digits into an integer.
+                            valeur = valeur * 10 + digit;
                         }
-                        buffer.putInt(valeur); // Place the integer value into the buffer.
-                        buffer.flip(); // Prepare buffer for writing.
-                        channel.write(buffer); // Write buffer to file channel.
-                        buffer.clear(); // Clear buffer for next iteration.
+                        buffer.putInt(valeur);
+                        buffer.flip();
+                        channel.write(buffer);
+                        buffer.clear();
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();
