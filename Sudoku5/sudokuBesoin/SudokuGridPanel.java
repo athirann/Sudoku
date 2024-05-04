@@ -1,9 +1,16 @@
 package sudokuBesoin;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import sudokuBesoin.SudokuGridPanel.CustomMouseListener;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 public class SudokuGridPanel extends JFrame {
     private JLabel[][] cases;
@@ -22,7 +29,6 @@ public class SudokuGridPanel extends JFrame {
     private Boolean[] buttonsUtilsClicked = new Boolean[5];
     private SudokuValidator validator;
 
-
     public SudokuGridPanel(int[][] grid, boolean loaded) {
         loadedFromFile = loaded;
         setTitle("Sudoku");
@@ -37,7 +43,6 @@ public class SudokuGridPanel extends JFrame {
 
     private void initComponents(int[][] grid) {
 
-        
         cases = new JLabel[9][9];
         buttonsClicked = new Boolean[9];
         buttons = new JButton[9];
@@ -54,16 +59,32 @@ public class SudokuGridPanel extends JFrame {
         SouthButtonUtilsPanel = new JPanel(new GridLayout(1, 3, 5, 5));
         SouthButtonUtilsPanel.setBorder(new EmptyBorder(75, 50, 75, 50));
 
-
-    
-
         buttonsUtils[0] = new JButton("Ajouter");
         buttonsUtils[1] = new JButton("Supprimer");
         buttonsUtils[2] = new JButton("Sauvegarder");
         buttonsUtils[3] = new JButton("Notes");
         buttonsUtils[4] = new JButton("Ouvrire Fichier :");
 
-        for(int i =0;i<5;i++){
+        buttonsUtils[4].addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Fichier GRI", "gri");
+            fileChooser.addChoosableFileFilter(filter);
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            int result = fileChooser.showOpenDialog(this);
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                try {
+                    SudokuFichierLis fileHandler = new SudokuFichierLis();
+                    int[][] newGrid = fileHandler.rameneLeSudoku(selectedFile.getAbsolutePath());
+                    displayGrid(newGrid); // Mettez à jour l'affichage avec la nouvelle grille
+                } catch (IOException ex) {
+                    System.out.println("Erreur lors de l'ouverture du fichier");
+                }
+            }
+        });
+
+        for (int i = 0; i < 5; i++) {
             buttonsUtils[i].addMouseListener(new CustomMouseListener());
             buttonsUtilsClicked[i] = false;
         }
@@ -74,9 +95,6 @@ public class SudokuGridPanel extends JFrame {
         SouthButtonUtilsPanel.add(buttonsUtils[4]);
         SouthButtonUtilsPanel.add(buttonsUtils[2]);
 
-
-
-
         for (int i = 0; i < 9; i++) {
             buttonsClicked[i] = false;
             buttons[i] = new JButton(Integer.toString(i + 1));
@@ -85,10 +103,8 @@ public class SudokuGridPanel extends JFrame {
             buttons[i].setPreferredSize(new Dimension(50, 20));
         }
 
-       
         Color lightBlue = new Color(170, 191, 205);
         Color darkerBlue = new Color(140, 161, 175);
-        
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
@@ -97,7 +113,6 @@ public class SudokuGridPanel extends JFrame {
                 cases[i][j].addMouseListener(new CustomMouseListener());
                 cases[i][j].setHorizontalAlignment(SwingConstants.CENTER);
                 cases[i][j].setOpaque(true);
-                
 
                 if (isLight) {
                     cases[i][j].setBackground(lightBlue);
@@ -127,7 +142,6 @@ public class SudokuGridPanel extends JFrame {
         validator = new SudokuValidator(cases, grid);
 
         solvedGrid = solve(grid);
-        
 
         add(sudokuPanel, BorderLayout.CENTER);
         add(buttonUtilsPanel, BorderLayout.NORTH);
@@ -138,17 +152,16 @@ public class SudokuGridPanel extends JFrame {
     private void displayGrid(int[][] grid) {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if(grid[i][j]!=0){
+                if (grid[i][j] != 0) {
                     cases[i][j].setText(Integer.toString(grid[i][j]));
-                    cases[i][j].setForeground(new Color(0, 0, 100)); 
+                    cases[i][j].setForeground(new Color(0, 0, 100));
                 }
-                
+
             }
         }
     }
 
     class CustomMouseListener extends MouseAdapter {
-
 
         public void mouseClicked(MouseEvent e) {
 
@@ -157,118 +170,100 @@ public class SudokuGridPanel extends JFrame {
             if (source instanceof JLabel) {
                 JLabel clickedLabel = (JLabel) source;
 
-                    for (int i = 0; i < 9; i++) {
-                        for (int j = 0; j < 9; j++) {
-                            if (clickedLabel.equals(cases[i][j])) {
-                                for (int x = 0; x < 9; x++) {
+                for (int i = 0; i < 9; i++) {
+                    for (int j = 0; j < 9; j++) {
+                        if (clickedLabel.equals(cases[i][j])) {
+                            for (int x = 0; x < 9; x++) {
 
-                                    if(buttonsUtilsClicked[1]){
-                                        cases[i][j].setText("");
-                                        
-                                    }
+                                if (buttonsUtilsClicked[1]) {
+                                    cases[i][j].setText("");
 
+                                }
 
-                                    else if (buttonsClicked[x]) {
+                                else if (buttonsClicked[x]) {
 
-                                        if(buttonsUtilsClicked[0]){
-                                            cases[i][j].setFont(font);
-                                            if (validator.isValidToAdd(i, j, x + 1, loadedFromFile)) {
-                                                cases[i][j].setText(Integer.toString(x + 1));
-                                            }
-                                                
+                                    if (buttonsUtilsClicked[0]) {
+                                        cases[i][j].setFont(font);
+                                        if (validator.isValidToAdd(i, j, x + 1, loadedFromFile)) {
+                                            cases[i][j].setText(Integer.toString(x + 1));
                                         }
 
+                                    }
 
+                                    else if (buttonsUtilsClicked[3]) {
+                                        if (cases[i][j].getText().length() < 3) {
+                                            cases[i][j].setFont(new Font("Arial", Font.PLAIN, 10));
+                                            cases[i][j].setText("<html>[" + (x + 1) + "]");
+                                            System.out.println(cases[i][j].getText().length());
+                                        } else {
+                                            String currentText = cases[i][j].getText();
 
+                                            if (currentText.length() < 21) {
+                                                if (currentText.length() < 10) {
 
-                                        else if (buttonsUtilsClicked[3]) {
-                                            if (cases[i][j].getText().length() < 3) {
-                                                cases[i][j].setFont(new Font("Arial", Font.PLAIN, 10));
-                                                cases[i][j].setText("<html>[" + (x + 1) + "]");
-                                                System.out.println(cases[i][j].getText().length());
-                                            } else {
-                                                String currentText = cases[i][j].getText();
+                                                    cases[i][j].setText(currentText + " [" + (x + 1) + "]");
 
-                
+                                                } else if (currentText.length() == 13) {
 
-                                                if (currentText.length() < 21) {
-                                                    if (currentText.length() < 10) { 
-                                                        
-                                                        cases[i][j].setText(currentText + " [" + (x + 1) + "]");
-                                                        
-                                                    } else if (currentText.length() == 13) {
+                                                    cases[i][j].setText(currentText + "<br>[" + (x + 1) + "]");
+                                                } else {
 
-                                                        cases[i][j].setText(currentText + "<br>[" + (x + 1) + "]");
-                                                    } else {
-
-                                                        cases[i][j].setText(currentText + " [" + (x + 1) + "]</html>");
-                                                    }
+                                                    cases[i][j].setText(currentText + " [" + (x + 1) + "]</html>");
                                                 }
                                             }
                                         }
-                                        
-                                        
-                                        
                                     }
 
-
-
                                 }
+
                             }
                         }
                     }
+                }
             }
 
-            
             else if (source instanceof JButton) {
                 JButton clickedButton = (JButton) source;
 
+                for (int x = 0; x < 9; x++) {
+                    if (clickedButton.equals(buttons[x])) {
+                        for (int i = 0; i < 9; i++) {
+                            buttonsClicked[i] = false;
+                        }
 
-                            for (int x = 0; x < 9; x++) {
-                                if (clickedButton.equals(buttons[x])) {
-                                    for(int i = 0; i < 9; i++) {
-                                        buttonsClicked[i] = false;
-                                    }
+                        buttonsClicked[x] = true;
+                    }
+                }
 
-                                    buttonsClicked[x] = true;
-                                }
-                            }
+                if (clickedButton.equals(buttonsUtils[0])) {
+                    buttonsUtilsClicked[0] = !buttonsUtilsClicked[0];
+                    buttonsUtilsClicked[1] = false;
+                }
 
-                            if (clickedButton.equals(buttonsUtils[0])) {
-                                buttonsUtilsClicked[0] = !buttonsUtilsClicked[0]; 
-                                buttonsUtilsClicked[1] = false; 
-                            }
+                if (clickedButton.equals(buttonsUtils[1])) {
+                    buttonsUtilsClicked[1] = !buttonsUtilsClicked[1];
+                    buttonsUtilsClicked[0] = false;
 
-                            if (clickedButton.equals(buttonsUtils[1])) {
-                                buttonsUtilsClicked[1] = !buttonsUtilsClicked[1]; 
-                                buttonsUtilsClicked[0] = false; 
-                                
-                            }
+                }
 
-                            if (clickedButton.equals(buttonsUtils[3])) {
-                                buttonsUtilsClicked[3] = !buttonsUtilsClicked[3]; 
-                                buttonsUtilsClicked[1] = false; 
-                                buttonsUtilsClicked[0] = false; 
-                                
-                                
-                            }
+                if (clickedButton.equals(buttonsUtils[3])) {
+                    buttonsUtilsClicked[3] = !buttonsUtilsClicked[3];
+                    buttonsUtilsClicked[1] = false;
+                    buttonsUtilsClicked[0] = false;
+
+                }
             }
         }
 
-        
-        
-    
-        
-
-        
     }
 
-/*Methode pour resoudre la grille afin de n'avoir qu'un resultat possible et de la comparer aux entrée de l'utilisateur */
+    /*
+     * Methode pour resoudre la grille afin de n'avoir qu'un resultat possible et de
+     * la comparer aux entrée de l'utilisateur
+     */
     public static int[][] solve(int[][] grid) {
         SudokuGrid sudoku = new SudokuGrid(grid);
         sudoku.solveSudoku();
         return sudoku.grille;
     }
 }
-
-
