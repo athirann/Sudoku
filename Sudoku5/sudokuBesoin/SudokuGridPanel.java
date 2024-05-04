@@ -10,7 +10,12 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.channels.FileChannel;
 
 public class SudokuGridPanel extends JFrame {
     private JLabel[][] cases;
@@ -65,21 +70,58 @@ public class SudokuGridPanel extends JFrame {
         buttonsUtils[3] = new JButton("Notes");
         buttonsUtils[4] = new JButton("Ouvrire Fichier :");
 
-        buttonsUtils[4].addActionListener(e -> {
+        buttonsUtils[2].addActionListener(e -> {
+            JFileChooser sauvegarder = new JFileChooser();
+            FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichier GRI", "gri");
+            sauvegarder.addChoosableFileFilter(filtre);
+            sauvegarder.setAcceptAllFileFilterUsed(false);
+            int verif = sauvegarder.showSaveDialog(null); 
+            if (verif == JFileChooser.APPROVE_OPTION) {
+                File fichier = sauvegarder.getSelectedFile();
+                if (!fichier.getPath().endsWith(".gri")) {
+                    fichier = new File(fichier.getPath() + ".gri");
+                }
+
+                try (FileOutputStream sortie = new FileOutputStream(fichier); 
+                        FileChannel channel = sortie.getChannel()) { /
+                    ByteBuffer buffer = ByteBuffer.allocate(81); 
+                    buffer.order(ByteOrder.BIG_ENDIAN);
+
+                    for (int i = 0; i < 9; i++) {
+                        for (int j = 0; j < 9; j++) {
+                            String labelContent = cases[i][j].getText();
+                            int digit = labelContent.isEmpty() ? 0 : Integer.parseInt(labelContent);
+                            buffer.put((byte) digit); 
+                        }
+                    }
+
+                    buffer.flip();
+                    channel.write(buffer);
+                } catch (IOException ex) {
+                    ex.printStackTrace(); 
+                    JOptionPane.showMessageDialog(this, "Erreur lors de la sauvegarde de la grille", "Erreur",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        buttonsUtils[4].addActionListener(e ->
+
+        {
             JFileChooser fileChooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter("Fichier GRI", "gri");
             fileChooser.addChoosableFileFilter(filter);
             fileChooser.setAcceptAllFileFilterUsed(false);
             int result = fileChooser.showOpenDialog(this);
-        
+
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
                 try {
                     SudokuFichierLis fileHandler = new SudokuFichierLis();
-                    newGrid = fileHandler.rameneLeSudoku(selectedFile.getAbsolutePath()); 
+                    newGrid = fileHandler.rameneLeSudoku(selectedFile.getAbsolutePath());
 
                     validator = new SudokuValidator(cases, newGrid);
-                    displayGrid(newGrid); 
+                    displayGrid(newGrid);
                 } catch (IOException ex) {
                     System.out.println("Erreur lors de l'ouverture du fichier");
                 }
@@ -140,8 +182,6 @@ public class SudokuGridPanel extends JFrame {
                 isLight = !isLight;
             }
         }
-        
-
 
         add(sudokuPanel, BorderLayout.CENTER);
         add(buttonUtilsPanel, BorderLayout.NORTH);
@@ -183,7 +223,7 @@ public class SudokuGridPanel extends JFrame {
                                 else if (buttonsClicked[x]) {
 
                                     if (buttonsUtilsClicked[0]) {
-                                        
+
                                         if (validator.isValidToAdd(i, j, x + 1, loadedFromFile)) {
                                             cases[i][j].setFont(font);
                                             cases[i][j].setText(Integer.toString(x + 1));
@@ -260,5 +300,4 @@ public class SudokuGridPanel extends JFrame {
 
     }
 
-    
 }
