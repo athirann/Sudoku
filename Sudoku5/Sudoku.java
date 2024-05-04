@@ -20,8 +20,10 @@ public class Sudoku {
 
         if (!startWithEmptyGrid) {
             sudokuGridPanel = new SudokuGridPanel(grid, true);
+        }else{  
+            sudokuGridPanel = new SudokuGridPanel(grid, false);
         }
-        sudokuGridPanel = new SudokuGridPanel(grid, false);
+        
     }
 
     public static void main(String[] args) {
@@ -29,6 +31,9 @@ public class Sudoku {
         int choice = JOptionPane.showOptionDialog(null, "Choisissez une option :",
                 "Options de départ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
                 null, options, options[0]);
+
+
+
 
         boolean startWithEmptyGrid = (choice == JOptionPane.YES_OPTION);
         new Sudoku(startWithEmptyGrid);

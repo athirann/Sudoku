@@ -6,11 +6,11 @@ import javax.swing.JLabel;
 
 public class SudokuValidator {
     private JLabel[][] cases;
-    private int[][] solvedGrid;
+    private int[][] gridLoaded;
 
     public SudokuValidator(JLabel[][] cases, int[][] solvedGrid) {
         this.cases = cases;
-        this.solvedGrid = solvedGrid;
+        this.gridLoaded = solvedGrid;
     }
 
     public boolean isValidToAdd(int row, int col, int value, boolean loadedFromFile) {
@@ -22,14 +22,14 @@ public class SudokuValidator {
     }
 
     private boolean isValidToAddWithSolution(int row, int col, int value) {
-        SudokuGrid tempGrid = new SudokuGrid(getCurrentGrid());
+        SudokuGrid tempGrid = gridLoaded.getCurrentGrid();
         try {
             tempGrid.fixerValeurCellule(row, col, value);
         } catch (IllegalArgumentException e) {
             return false;
         }
 
-        if (solvedGrid[row][col] != value) {
+        if (gridLoaded[row][col] != value) {
             return false;
         }
 

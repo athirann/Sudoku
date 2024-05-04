@@ -55,7 +55,7 @@ public class SudokuGridPanel extends JFrame {
         SouthButtonUtilsPanel.setBorder(new EmptyBorder(75, 50, 75, 50));
 
 
-        
+    
 
         buttonsUtils[0] = new JButton("Ajouter");
         buttonsUtils[1] = new JButton("Supprimer");
@@ -171,11 +171,11 @@ public class SudokuGridPanel extends JFrame {
                                     else if (buttonsClicked[x]) {
 
                                         if(buttonsUtilsClicked[0]){
-                                            
+                                            cases[i][j].setFont(font);
                                             if (validator.isValidToAdd(i, j, x + 1, loadedFromFile)) {
-                                                cases[i][j].setFont(font);
                                                 cases[i][j].setText(Integer.toString(x + 1));
                                             }
+                                                
                                         }
 
 
