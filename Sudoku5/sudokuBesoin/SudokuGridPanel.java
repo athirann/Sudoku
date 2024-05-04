@@ -35,8 +35,11 @@ public class SudokuGridPanel extends JFrame {
     private Boolean[] buttonsUtilsClicked = new Boolean[5];
     private SudokuValidator validator;
     private boolean resolver;
+    private long debutJeu;
+    private boolean ficOpen = false;
 
     public SudokuGridPanel(int[][] grid, boolean loaded, boolean resolv) {
+        
         loadedFromFile = loaded;
         resolver = resolv;
         
@@ -78,40 +81,53 @@ public class SudokuGridPanel extends JFrame {
         buttonsUtils[5] = new JButton("Resolution Auto");
         buttonsUtils[6] = new JButton("Fini");
 
+        buttonsUtils[6].addActionListener(e -> {
+            
+                if (validator.isGrilleComplete()) {
+
+                    
+                    JOptionPane.showMessageDialog(null, "Félicitations! La grille est complète.");
+                    System.exit(0);
+                }else{
+                    JOptionPane.showMessageDialog(null,"Tu n'as pas fini !");
+                }
+                
+            
+
+        });
     
         buttonsUtils[2].addActionListener(e -> {
             JFileChooser sauvegarder = new JFileChooser();
-            FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichier GRI", "gri");
-            sauvegarder.addChoosableFileFilter(filtre);
-            sauvegarder.setAcceptAllFileFilterUsed(false);
-            int verif = sauvegarder.showSaveDialog(null);
-            if (verif == JFileChooser.APPROVE_OPTION) {
-                File fichier = sauvegarder.getSelectedFile();
-                if (!fichier.getPath().endsWith(".gri")) {
-                    fichier = new File(fichier.getPath() + ".gri");
-                }
-
-                try (FileOutputStream sortie = new FileOutputStream(fichier);
-                        FileChannel channel = sortie.getChannel()) {
-                    ByteBuffer buffer = ByteBuffer.allocate(4);
-                    buffer.order(ByteOrder.BIG_ENDIAN);
-
-                    for (int i = 0; i <= 8; i++) {
-                        int valeur = 0;
-                        for (int j = 0; j <= 8; j++) {
-                            String labelContent = cases[i][j].getText();
-                            int digit = labelContent.isEmpty() ? 0 : Integer.parseInt(labelContent);
-                            valeur = valeur * 10 + digit;
-                        }
-                        buffer.putInt(valeur);
-                        buffer.flip();
-                        channel.write(buffer);
-                        buffer.clear();
-                    }
-                } catch (IOException ex) {
-                   System.out.println("erreur");
-                }
+        FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichier GRI", "gri");
+        sauvegarder.addChoosableFileFilter(filtre);
+        sauvegarder.setAcceptAllFileFilterUsed(false);
+        int verif = sauvegarder.showSaveDialog(null);
+        if (verif == JFileChooser.APPROVE_OPTION) {
+            File fichier = sauvegarder.getSelectedFile();
+            if (!fichier.getPath().endsWith(".gri")) {
+                fichier = new File(fichier.getPath() + ".gri");
             }
+
+            try (FileOutputStream sortie = new FileOutputStream(fichier);
+                    FileChannel channel = sortie.getChannel()) {
+                ByteBuffer buffer = ByteBuffer.allocate(4);
+                buffer.order(ByteOrder.BIG_ENDIAN);
+
+                for (int i = 0; i <= 8; i++) {
+                    int valeur = 0;
+                    for (int j = 0; j <= 8; j++) {
+                        int digit = grid[i][j];
+                        valeur = valeur * 10 + digit;
+                    }
+                    buffer.putInt(valeur);
+                    buffer.flip();
+                    channel.write(buffer);
+                    buffer.clear();
+                }
+            } catch (IOException ex) {
+                System.out.println("erreur");
+            }
+        }  
         });
 
         // Bouton qui qui permet d'ouvrir une fenetre de Jfilechooser pour ouvrir une
@@ -132,6 +148,7 @@ public class SudokuGridPanel extends JFrame {
                     newGrid = fileHandler.rameneLeSudoku(selectedFile.getAbsolutePath());
 
                     validator = new SudokuValidator(cases, newGrid);
+                    ficOpen = true;
                     displayGrid(newGrid, false);
                 } catch (IOException ex) {
                     System.out.println("Erreur lors de l'ouverture du fichier");
@@ -208,10 +225,18 @@ public class SudokuGridPanel extends JFrame {
             }
         }
 
-        buttonsUtils[5].addActionListener(e -> resolveGrid());
+        buttonsUtils[5].addActionListener(e -> {
+            debutJeu = System.nanoTime();
+            resolveGrid();
+            if (validator.isGrilleComplete()) {
+                long finJeu = System.nanoTime();
+                double dureeJeu = (finJeu - debutJeu) / 1_000_000_000.00000; 
+                JOptionPane.showMessageDialog(null, "Félicitations! La grille est complète. La durée du jeu est de " + String.format("%.5f", dureeJeu) + " secondes");
+                System.exit(0);
+            }
+        });
 
         
-        gridCurr = grid;
         add(sudokuPanel, BorderLayout.CENTER);
         add(buttonUtilsPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.EAST);
@@ -314,6 +339,12 @@ public class SudokuGridPanel extends JFrame {
 
                 for (int x = 0; x < 9; x++) {
                     if (clickedButton.equals(buttons[x])) {
+
+                        if((ficOpen == false && resolver) || (loadedFromFile && ficOpen == false)){
+                            JOptionPane.showMessageDialog(null,"Il faut dabord ouvrire une grille !");
+                        }
+
+
                         for (int i = 0; i < 9; i++) {
                             buttonsClicked[i] = false;
                         }

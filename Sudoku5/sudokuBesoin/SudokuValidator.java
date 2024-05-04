@@ -23,10 +23,13 @@ public class SudokuValidator {
         }
     }
 
+    
+
     private boolean isValidToAddWithSolution(int row, int col, int value) {
         SudokuGrid tempGrid = new SudokuGrid(gridLoaded);
 
-
+        SudokuGrid solver = new SudokuGrid(getCurrentGrid());
+        int[][] solvedGrid = solver.solve();
 
         try {
             tempGrid.fixerValeurCellule(row, col, value);
@@ -35,6 +38,10 @@ public class SudokuValidator {
         }
 
         if (gridLoaded[row][col] != value) {
+            return false;
+        }
+
+        if (solvedGrid[row][col] != value){
             return false;
         }
 
