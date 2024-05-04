@@ -75,30 +75,30 @@ public class SudokuGridPanel extends JFrame {
             FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichier GRI", "gri");
             sauvegarder.addChoosableFileFilter(filtre);
             sauvegarder.setAcceptAllFileFilterUsed(false);
-            int verif = sauvegarder.showSaveDialog(null); 
+            int verif = sauvegarder.showSaveDialog(null);
             if (verif == JFileChooser.APPROVE_OPTION) {
                 File fichier = sauvegarder.getSelectedFile();
                 if (!fichier.getPath().endsWith(".gri")) {
                     fichier = new File(fichier.getPath() + ".gri");
                 }
 
-                try (FileOutputStream sortie = new FileOutputStream(fichier); 
-                        FileChannel channel = sortie.getChannel()) { /
-                    ByteBuffer buffer = ByteBuffer.allocate(81); 
+                try (FileOutputStream sortie = new FileOutputStream(fichier);
+                        FileChannel channel = sortie.getChannel()) {
+                    ByteBuffer buffer = ByteBuffer.allocate(81);
                     buffer.order(ByteOrder.BIG_ENDIAN);
 
                     for (int i = 0; i < 9; i++) {
                         for (int j = 0; j < 9; j++) {
                             String labelContent = cases[i][j].getText();
                             int digit = labelContent.isEmpty() ? 0 : Integer.parseInt(labelContent);
-                            buffer.put((byte) digit); 
+                            buffer.put((byte) digit);
                         }
                     }
 
                     buffer.flip();
                     channel.write(buffer);
                 } catch (IOException ex) {
-                    ex.printStackTrace(); 
+                    ex.printStackTrace();
                     JOptionPane.showMessageDialog(this, "Erreur lors de la sauvegarde de la grille", "Erreur",
                             JOptionPane.ERROR_MESSAGE);
                 }
