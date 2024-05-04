@@ -28,8 +28,9 @@ public class SudokuValidator {
     private boolean isValidToAddWithSolution(int row, int col, int value) {
         SudokuGridPanel tempGrid = new SudokuGridPanel(gridLoaded, loadedFromFiles);
         tempGrid.solve(gridLoaded);
+        SudokuGrid tempGrids = new SudokuGrid(gridLoaded);
         try {
-            tempGrid.fixerValeurCellule(row, col, value);
+            tempGrids.fixerValeurCellule(row, col, value);
         } catch (IllegalArgumentException e) {
             return false;
         }
