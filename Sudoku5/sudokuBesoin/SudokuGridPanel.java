@@ -18,6 +18,7 @@ public class SudokuGridPanel extends JFrame {
     private Boolean[] buttonsClicked;
     private JButton[] buttons;
     private int[][] solvedGrid;
+    private int[][] newGrid = null;
     private JPanel sudokuPanel;
     private JPanel buttonPanel;
     private JPanel buttonUtilsPanel;
@@ -71,13 +72,15 @@ public class SudokuGridPanel extends JFrame {
             fileChooser.addChoosableFileFilter(filter);
             fileChooser.setAcceptAllFileFilterUsed(false);
             int result = fileChooser.showOpenDialog(this);
-
+        
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
                 try {
                     SudokuFichierLis fileHandler = new SudokuFichierLis();
-                    int[][] newGrid = fileHandler.rameneLeSudoku(selectedFile.getAbsolutePath());
-                    displayGrid(newGrid); // Mettez à jour l'affichage avec la nouvelle grille
+                    newGrid = fileHandler.rameneLeSudoku(selectedFile.getAbsolutePath()); 
+
+                    validator = new SudokuValidator(cases, newGrid);
+                    displayGrid(newGrid); 
                 } catch (IOException ex) {
                     System.out.println("Erreur lors de l'ouverture du fichier");
                 }
@@ -138,8 +141,7 @@ public class SudokuGridPanel extends JFrame {
                 isLight = !isLight;
             }
         }
-        displayGrid(grid);
-        validator = new SudokuValidator(cases, grid);
+        
 
         solvedGrid = solve(grid);
 

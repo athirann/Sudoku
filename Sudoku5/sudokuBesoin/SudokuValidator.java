@@ -7,22 +7,27 @@ import javax.swing.JLabel;
 public class SudokuValidator {
     private JLabel[][] cases;
     private int[][] gridLoaded;
+    private boolean loadedFromFiles;
 
     public SudokuValidator(JLabel[][] cases, int[][] grillePass) {
         this.cases = cases;
         this.gridLoaded = grillePass;
+        
     }
 
     public boolean isValidToAdd(int row, int col, int value, boolean loadedFromFile) {
+        loadedFromFiles = loadedFromFile;
         if (loadedFromFile) {
             return isValidToAddWithSolution(row, col, value);
+            
         } else {
             return isValidToAddWithoutSolution(row, col, value);
         }
     }
 
     private boolean isValidToAddWithSolution(int row, int col, int value) {
-        SudokuGrid tempGrid = new SudokuGrid(gridLoaded);
+        SudokuGridPanel tempGrid = new SudokuGridPanel(gridLoaded, loadedFromFiles);
+        tempGrid.solve(gridLoaded);
         try {
             tempGrid.fixerValeurCellule(row, col, value);
         } catch (IllegalArgumentException e) {
