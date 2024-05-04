@@ -40,6 +40,7 @@ public class SudokuGridPanel extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         initComponents(grid);
+        validator = new SudokuValidator(cases, grid);
 
         setSize(900, 800);
         setLocation(500, 200);

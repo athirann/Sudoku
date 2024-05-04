@@ -44,6 +44,7 @@ public class SudokuValidator {
 
     private boolean isValidToAddWithoutSolution(int row, int col, int value) {
         SudokuGrid tempGrid = new SudokuGrid(getCurrentGrid());
+        
         try {
             tempGrid.fixerValeurCellule(row, col, value);
         } catch (IllegalArgumentException e) {
