@@ -39,10 +39,12 @@ public class SudokuGridPanel extends JFrame {
     public SudokuGridPanel(int[][] grid, boolean loaded, boolean resolv) {
         loadedFromFile = loaded;
         resolver = resolv;
+        
         setTitle("Sudoku");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         initComponents(grid);
+        
         validator = new SudokuValidator(cases, grid);
 
         setSize(900, 800);
@@ -77,7 +79,6 @@ public class SudokuGridPanel extends JFrame {
         buttonsUtils[6] = new JButton("Fini");
 
     
-        // Bouton qui qui permet d'ouvrir une fenetre de Jfilechooser pour sauvegarder
         buttonsUtils[2].addActionListener(e -> {
             JFileChooser sauvegarder = new JFileChooser();
             FileNameExtensionFilter filtre = new FileNameExtensionFilter("Fichier GRI", "gri");
@@ -210,7 +211,7 @@ public class SudokuGridPanel extends JFrame {
         buttonsUtils[5].addActionListener(e -> resolveGrid());
 
         
-
+        gridCurr = grid;
         add(sudokuPanel, BorderLayout.CENTER);
         add(buttonUtilsPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.EAST);
@@ -221,10 +222,7 @@ public class SudokuGridPanel extends JFrame {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if (grid[i][j] != 0) {
-                    if(resolved){
-                        cases[i][j].setText(Integer.toString(grid[i][j]));
-                        cases[i][j].setForeground(new Color(0, 0, 200));
-                    }
+                    
                     cases[i][j].setText(Integer.toString(grid[i][j]));
                     cases[i][j].setForeground(new Color(0, 0, 100));
                 }
@@ -257,27 +255,27 @@ public class SudokuGridPanel extends JFrame {
                 for (int i = 0; i < 9; i++) {
                     for (int j = 0; j < 9; j++) {
                         if (clickedLabel.equals(cases[i][j])) {
+
+                            if (buttonsUtilsClicked[1]) {
+                                validator.isValidToAdd(i, j, 0, loadedFromFile);
+                                cases[i][j].setText("");
+                                
+                                buttonsUtilsClicked[1] = false;
+                            }
                             for (int x = 0; x < 9; x++) {
 
-                                if (buttonsUtilsClicked[1]) {
-                                    cases[i][j].setText("");
-                                    for (int k = 0; k < 9; k++) {
-                                        buttonsClicked[k] = false;
-                                    }
-                                }
+                                
 
-                                else if (buttonsClicked[x]) {
+                                if (buttonsClicked[x]) {
 
                                     if (buttonsUtilsClicked[0]) {
 
                                         if (validator.isValidToAdd(i, j, x + 1, loadedFromFile)) {
+                                            
                                             cases[i][j].setFont(font);
                                             cases[i][j].setText(Integer.toString(x + 1));
-                                            for (int k = 0; k < 9; k++) {
-                                                buttonsClicked[k] = false;
-                                            }
+                                            buttonsClicked[x] = false;
                                         }
-                                        buttonsClicked[x] = true;
 
                                     }
 

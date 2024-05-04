@@ -8,7 +8,10 @@ public class SudokuGrid {
     }
 
     public void fixerValeurCellule(int ligne, int colonne, int valeur) {
-        if (estValeurValide(valeur) && estValeurUniqueDansLigne(ligne, valeur) && estValeurUniqueDansColonne(colonne, valeur) && estValeurUniqueDansSousGrille(ligne, colonne, valeur)) {
+        if(valeur == 0){
+            grille[ligne][colonne] = 0;
+        }
+        else if (estValeurValide(valeur) && estValeurUniqueDansLigne(ligne, valeur) && estValeurUniqueDansColonne(colonne, valeur) && estValeurUniqueDansSousGrille(ligne, colonne, valeur)) {
             grille[ligne][colonne] = valeur;
         } else {
             throw new IllegalArgumentException("Valeur invalide pour la cellule Sudoku : " + valeur);
