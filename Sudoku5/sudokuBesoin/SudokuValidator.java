@@ -54,6 +54,20 @@ public class SudokuValidator {
         return true;
     }
 
+    public boolean isGrilleComplete() {
+        int[][] grid = getCurrentGrid();
+        
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (grid[i][j] == 0) {
+                    return false; 
+                }
+            }
+        }
+        
+        return true; 
+    }
+
     public int[][] getCurrentGrid() {
         int[][] grid = new int[9][9];
         for (int i = 0; i < 9; i++) {

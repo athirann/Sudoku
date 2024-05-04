@@ -31,12 +31,14 @@ public class SudokuGridPanel extends JFrame {
     private JPanel SouthButtonUtilsPanel;
     private Color bleu_marine = new Color(0, 0, 100);
     private boolean isLight = true;
-    private JButton[] buttonsUtils = new JButton[5];
+    private JButton[] buttonsUtils = new JButton[7];
     private Boolean[] buttonsUtilsClicked = new Boolean[5];
     private SudokuValidator validator;
+    private boolean resolver;
 
-    public SudokuGridPanel(int[][] grid, boolean loaded) {
+    public SudokuGridPanel(int[][] grid, boolean loaded, boolean resolv) {
         loadedFromFile = loaded;
+        resolver = resolv;
         setTitle("Sudoku");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -71,6 +73,8 @@ public class SudokuGridPanel extends JFrame {
         buttonsUtils[2] = new JButton("Sauvegarder");
         buttonsUtils[3] = new JButton("Notes");
         buttonsUtils[4] = new JButton("Ouvrire Fichier :");
+        buttonsUtils[5] = new JButton("Resolution Auto");
+        buttonsUtils[6] = new JButton("Fini");
 
     
         // Bouton qui qui permet d'ouvrir une fenetre de Jfilechooser pour sauvegarder
@@ -127,7 +131,7 @@ public class SudokuGridPanel extends JFrame {
                     newGrid = fileHandler.rameneLeSudoku(selectedFile.getAbsolutePath());
 
                     validator = new SudokuValidator(cases, newGrid);
-                    displayGrid(newGrid);
+                    displayGrid(newGrid, false);
                 } catch (IOException ex) {
                     System.out.println("Erreur lors de l'ouverture du fichier");
                 }
@@ -143,11 +147,21 @@ public class SudokuGridPanel extends JFrame {
         buttonUtilsPanel.add(buttonsUtils[1]);
         buttonUtilsPanel.add(buttonsUtils[3]);
 
-        if(loadedFromFile){
+        if(loadedFromFile && !resolver){
             SouthButtonUtilsPanel.add(buttonsUtils[4]);
+            SouthButtonUtilsPanel.add(buttonsUtils[2]);
+        }else if (!loadedFromFile && !resolver){
+            SouthButtonUtilsPanel.add(buttonsUtils[2]);
+            
+        }
+
+        if(resolver){
+            buttonUtilsPanel.add(buttonsUtils[5]);
+            SouthButtonUtilsPanel.add(buttonsUtils[4]);
+            SouthButtonUtilsPanel.add(buttonsUtils[6]);
+
         }
         
-        SouthButtonUtilsPanel.add(buttonsUtils[2]);
 
         for (int i = 0; i < 9; i++) {
             buttonsClicked[i] = false;
@@ -193,6 +207,8 @@ public class SudokuGridPanel extends JFrame {
             }
         }
 
+        buttonsUtils[5].addActionListener(e -> resolveGrid());
+
         
 
         add(sudokuPanel, BorderLayout.CENTER);
@@ -201,10 +217,14 @@ public class SudokuGridPanel extends JFrame {
         add(SouthButtonUtilsPanel, BorderLayout.SOUTH);
     }
 
-    private void displayGrid(int[][] grid) {
+    private void displayGrid(int[][] grid, boolean resolved) {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if (grid[i][j] != 0) {
+                    if(resolved){
+                        cases[i][j].setText(Integer.toString(grid[i][j]));
+                        cases[i][j].setForeground(new Color(0, 0, 200));
+                    }
                     cases[i][j].setText(Integer.toString(grid[i][j]));
                     cases[i][j].setForeground(new Color(0, 0, 100));
                 }
@@ -212,6 +232,18 @@ public class SudokuGridPanel extends JFrame {
             }
         }
     }
+
+    private void resolveGrid() {
+        SudokuValidator sudokuValidator = new SudokuValidator(cases, gridCurr);
+        int[][] currentGrid = sudokuValidator.getCurrentGrid();
+        SudokuGrid solver = new SudokuGrid(currentGrid);
+        int[][] solvedGrid = solver.solve();
+        boolean resolved = true;
+        
+        displayGrid(solvedGrid, resolved);
+    }
+
+
 
     class CustomMouseListener extends MouseAdapter {
 
