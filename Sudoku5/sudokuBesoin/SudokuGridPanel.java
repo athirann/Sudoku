@@ -124,7 +124,7 @@ public class SudokuGridPanel extends JFrame {
             }
         }
         displayGrid(grid);
-        validator = new SudokuValidator(cases, solvedGrid);
+        validator = new SudokuValidator(cases, grid);
 
         solvedGrid = solve(grid);
         

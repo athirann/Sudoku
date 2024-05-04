@@ -8,9 +8,9 @@ public class SudokuValidator {
     private JLabel[][] cases;
     private int[][] gridLoaded;
 
-    public SudokuValidator(JLabel[][] cases, int[][] solvedGrid) {
+    public SudokuValidator(JLabel[][] cases, int[][] grillePass) {
         this.cases = cases;
-        this.gridLoaded = solvedGrid;
+        this.gridLoaded = grillePass;
     }
 
     public boolean isValidToAdd(int row, int col, int value, boolean loadedFromFile) {
@@ -22,7 +22,7 @@ public class SudokuValidator {
     }
 
     private boolean isValidToAddWithSolution(int row, int col, int value) {
-        SudokuGrid tempGrid = gridLoaded.getCurrentGrid();
+        SudokuGrid tempGrid = new SudokuGrid(gridLoaded);
         try {
             tempGrid.fixerValeurCellule(row, col, value);
         } catch (IllegalArgumentException e) {
