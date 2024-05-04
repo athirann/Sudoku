@@ -25,8 +25,8 @@ public class SudokuValidator {
 
     private boolean isValidToAddWithSolution(int row, int col, int value) {
         SudokuGrid tempGrid = new SudokuGrid(gridLoaded);
-        
-        
+
+
 
         try {
             tempGrid.fixerValeurCellule(row, col, value);
@@ -44,7 +44,7 @@ public class SudokuValidator {
 
     private boolean isValidToAddWithoutSolution(int row, int col, int value) {
         SudokuGrid tempGrid = new SudokuGrid(getCurrentGrid());
-        
+
         try {
             tempGrid.fixerValeurCellule(row, col, value);
         } catch (IllegalArgumentException e) {
@@ -54,7 +54,7 @@ public class SudokuValidator {
         return true;
     }
 
-    private int[][] getCurrentGrid() {
+    public int[][] getCurrentGrid() {
         int[][] grid = new int[9][9];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {

@@ -23,6 +23,7 @@ public class SudokuGridPanel extends JFrame {
     private Boolean[] buttonsClicked;
     private JButton[] buttons;
     private int[][] newGrid = null;
+    private int[][] gridCurr;
     private JPanel sudokuPanel;
     private JPanel buttonPanel;
     private JPanel buttonUtilsPanel;
@@ -71,6 +72,7 @@ public class SudokuGridPanel extends JFrame {
         buttonsUtils[3] = new JButton("Notes");
         buttonsUtils[4] = new JButton("Ouvrire Fichier :");
 
+    
         // Bouton qui qui permet d'ouvrir une fenetre de Jfilechooser pour sauvegarder
         buttonsUtils[2].addActionListener(e -> {
             JFileChooser sauvegarder = new JFileChooser();
@@ -140,7 +142,11 @@ public class SudokuGridPanel extends JFrame {
         buttonUtilsPanel.add(buttonsUtils[0]);
         buttonUtilsPanel.add(buttonsUtils[1]);
         buttonUtilsPanel.add(buttonsUtils[3]);
-        SouthButtonUtilsPanel.add(buttonsUtils[4]);
+
+        if(loadedFromFile){
+            SouthButtonUtilsPanel.add(buttonsUtils[4]);
+        }
+        
         SouthButtonUtilsPanel.add(buttonsUtils[2]);
 
         for (int i = 0; i < 9; i++) {
@@ -186,6 +192,8 @@ public class SudokuGridPanel extends JFrame {
                 isLight = !isLight;
             }
         }
+
+        
 
         add(sudokuPanel, BorderLayout.CENTER);
         add(buttonUtilsPanel, BorderLayout.NORTH);
@@ -264,9 +272,7 @@ public class SudokuGridPanel extends JFrame {
                                             }
                                         }
                                     }
-
                                 }
-
                             }
                         }
                     }
