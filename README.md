@@ -1,6 +1,6 @@
 # Jeu du Sudoku
 
-Ce Sudoku été développé par Amir Kabbouri et Athiran Nagathurai dans le cadre de la SAE lors de notre première année (2023) de BUT Informatique à l'IUT de Fontainebleau.
+Ce Sudoku a été développé par Amir Kabbouri et Athiran Nagathurai dans le cadre de la SAE lors de notre première année (2023) de BUT Informatique à l'IUT de Fontainebleau.
 
 ## Principes généraux :
 
@@ -40,8 +40,6 @@ Utiliser la commande pour supprimer les fichiers class :
 make clean
 ```
 
-
-
 ## Fonctionnalités :
 
 ### Fonctionnalités exigées
@@ -62,9 +60,17 @@ make clean
   
   ## Rapport d'avancement :
   
-  Pour une analyse détaillée du projet, veuillez consulter le rapport d'avancement `SudokuRapport Amir Kabbouri - Athiran Nagathurai.pdf`,disponible dans ce dépôt. Ce document inclut des descriptions de fonctionnalités, des diagrammes de structure, et des réflexions personnelles des auteurs sur le développement du programme.
+  Pour une analyse détaillée du projet, veuillez consulter le rapport d'avancement `rapport.pdf`,disponible dans ce dépôt. Ce document inclut des descriptions de fonctionnalités, des diagrammes de structure, et des réflexions personnelles des auteurs sur le développement du programme.
 
-### Bibliothèque graphique de l'IUT de Fontainebleau
+## API officielle de Java :
 
-- Documentation : [API Officielle]([Overview (Java SE 21 &amp; JDK 21)](https://iut-fbleau.fr/docs/java/api/index.html))
+- Documentation : [API Officielle Java]((Java SE 21 &amp; JDK 21)](https://iut-fbleau.fr/docs/java/api/index.html))
 - Auteur : Oracle
+
+### Crédits :
+
+- Code :
+  
+  - Amir Kabbouri  (@kabbouri)
+  
+  - Athiran Nagathurai (@nagathur)
