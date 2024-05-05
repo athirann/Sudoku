@@ -24,10 +24,10 @@ sudokuBesoin/SudokuFichierLis.class: sudokuBesoin/SudokuFichierLis.java
 
 ### OPTIONAL RULES ###
 
-run1: Sudoku.class
+run2: Sudoku.class
 	$(JVM) $(JVMFLAGS) -cp .:sudokuBesoin Sudoku
 
-run2: SudokuResolution.class
+run1: SudokuResolution.class
 	$(JVM) $(JVMFLAGS) -cp .:sudokuBesoin SudokuResolution
 
 SudokuResolution.class: SudokuResolution.java
