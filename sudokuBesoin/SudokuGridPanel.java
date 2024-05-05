@@ -17,27 +17,124 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 
-public class SudokuGridPanel extends JFrame {
-    private JLabel[][] cases;
-    private boolean loadedFromFile;
-    private Boolean[] buttonsClicked;
-    private JButton[] buttons;
-    private int[][] newGrid = null;
-    private int[][] gridCurr;
-    private JPanel sudokuPanel;
-    private JPanel buttonPanel;
-    private JPanel buttonUtilsPanel;
-    private Font font = new Font("Arial", Font.PLAIN, 20);
-    private JPanel SouthButtonUtilsPanel;
-    private Color bleu_marine = new Color(0, 0, 100);
-    private boolean isLight = true;
-    private JButton[] buttonsUtils = new JButton[7];
-    private Boolean[] buttonsUtilsClicked = new Boolean[5];
-    private SudokuValidator validator;
-    private boolean resolver;
-    private long debutJeu;
-    private boolean ficOpen = false;
 
+/**
+ * Classe principale de l'interface utilisateur pour un jeu de Sudoku.
+ * Cette classe étend {@link JFrame} et configure l'interface graphique du Sudoku, 
+ * incluant le panneau de grille de Sudoku, les boutons de contrôle, et la logique de validation.
+ * Elle gère également les événements de l'interface utilisateur pour interagir avec la grille de Sudoku.
+ *
+ * @author Amir KABBOURI  &amp;  Athiran NAGATHURAI
+ */
+
+public class SudokuGridPanel extends JFrame {
+
+
+    /**
+ * Color for navy blue used in UI elements.
+ */
+private Color bleu_marine = new Color(0, 0, 100);
+
+/**
+ * Panel for holding utility buttons.
+ */
+private JPanel buttonPanel;
+
+/**
+ * Array of game buttons.
+ */
+private JButton[] buttons;
+
+/**
+ * Tracks whether buttons have been clicked.
+ */
+private Boolean[] buttonsClicked;
+
+/**
+ * Array of utility buttons for additional functions.
+ */
+private JButton[] buttonsUtils = new JButton[7];
+
+/**
+ * Tracks clicks on utility buttons.
+ */
+private Boolean[] buttonsUtilsClicked = new Boolean[5];
+
+/**
+ * Panel for additional utility buttons.
+ */
+private JPanel buttonUtilsPanel;
+
+/**
+ * Labels representing the squares in the Sudoku grid.
+ */
+private JLabel[][] cases;
+
+/**
+ * Start time for the game in nanoseconds.
+ */
+private long debutJeu;
+
+/**
+ * Indicates whether a file has been opened.
+ */
+private boolean ficOpen = false;
+
+/**
+ * Default font used across UI elements.
+ */
+private Font font = new Font("Arial", Font.PLAIN, 20);
+
+/**
+ * Current state of the grid.
+ */
+private int[][] gridCurr;
+
+/**
+ * Indicates light mode status.
+ */
+private boolean isLight = true;
+
+/**
+ * Status of the grid loaded from a file.
+ */
+private boolean loadedFromFile;
+
+/**
+ * Represents a newly created grid; `null` if not used.
+ */
+private int[][] newGrid = null;
+
+/**
+ * Indicates if the auto-solve feature is active.
+ */
+private boolean resolver;
+
+/**
+ * Panel located at the south containing button utilities.
+ */
+private JPanel SouthButtonUtilsPanel;
+
+/**
+ * Main panel containing the Sudoku grid.
+ */
+private JPanel sudokuPanel;
+
+/**
+ * SudokuValidator used for checking the validity of moves.
+ */
+private SudokuValidator validator;
+
+
+
+    /**
+     * Construit un panneau de grille Sudoku avec la configuration initiale spécifiée.
+     *
+     * @param grid Le tableau d'entiers représentant les valeurs initiales de la grille Sudoku.
+     * Utilise {@link SudokuValidator}.
+     * @param loaded Indique si la grille a été chargée à partir d'un fichier.
+     * @param resolv Indique si le mode de résolution automatique est activé.
+     */
     public SudokuGridPanel(int[][] grid, boolean loaded, boolean resolv) {
         
         loadedFromFile = loaded;
@@ -54,8 +151,15 @@ public class SudokuGridPanel extends JFrame {
         setLocation(500, 200);
         setVisible(true);
     }
-
+     /**
+     * Initialise les composants de l'interface utilisateur, incluant la grille de Sudoku, les boutons et les panels.
+     *
+     * @param grid Le tableau d'entiers pour initialiser la grille.
+     */
     private void initComponents(int[][] grid) {
+        // Initialisation des composants de l'interface et configuration des événements
+        // Cette méthode configure la grille, les boutons numériques et utilitaires,
+        // et les panels pour organiser ces éléments.
 
         cases = new JLabel[9][9];
         buttonsClicked = new Boolean[9];
@@ -251,7 +355,15 @@ public class SudokuGridPanel extends JFrame {
         add(SouthButtonUtilsPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Affiche la grille de Sudoku avec les valeurs spécifiées.
+     *
+     * @param grid Le tableau d'entiers représentant la grille Sudoku.
+     * @param resolved Indique si la grille a été résolue.
+     */
     private void displayGrid(int[][] grid, boolean resolved) {
+        // Met à jour les labels de la grille avec les valeurs de la grille spécifiée.
+        // Applique une couleur différente si la grille est résolue.
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if (grid[i][j] != 0) {
@@ -264,6 +376,11 @@ public class SudokuGridPanel extends JFrame {
         }
     }
 
+    /**
+     * Déclenche le processus de résolution de la grille de Sudoku.
+     * Utilise {@link SudokuValidator} pour vérifier les solutions et mettre à jour la grille de l'interface utilisateur.
+     * Affiche la grille résolue sur l'interface graphique.
+     */
     private void resolveGrid() {
         SudokuValidator sudokuValidator = new SudokuValidator(cases, gridCurr);
         int[][] currentGrid = sudokuValidator.getCurrentGrid();
