@@ -28,7 +28,7 @@ run1: Sudoku.class
 	$(JVM) $(JVMFLAGS) -cp .:sudokuBesoin Sudoku
 
 run2: SudokuResolution.class
-	$(JVM) $(JVMFLAGS) -cp .:sudokuBesoin SudokuResolution
+	$(JVM) $(JVMFLAGS)  -cp .:sudokuBesoin SudokuResolution
 
 SudokuResolution.class: SudokuResolution.java
 	$(JC) $(JCFLAGS) SudokuResolution.java
