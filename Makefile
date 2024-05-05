@@ -10,6 +10,9 @@ JVMFLAGS =
 Sudoku.class: Sudoku.java sudokuBesoin/SudokuGridPanel.class sudokuBesoin/SudokuValidator.class sudokuBesoin/SudokuGrid.class sudokuBesoin/SudokuFichierLis.class
 	$(JC) $(JCFLAGS) Sudoku.java
 
+SudokuResolution.class : SudokuResolution.java sudokuBesoin/SudokuGridPanel.class sudokuBesoin/SudokuValidator.class sudokuBesoin/SudokuGrid.class sudokuBesoin/SudokuFichierLis.class
+	$(JC) $(JCFLAGS) SudokuResolution.java
+
 sudokuBesoin/SudokuGridPanel.class: sudokuBesoin/SudokuGridPanel.java sudokuBesoin/SudokuValidator.class
 	$(JC) $(JCFLAGS) sudokuBesoin/SudokuGridPanel.java
 
@@ -24,14 +27,11 @@ sudokuBesoin/SudokuFichierLis.class: sudokuBesoin/SudokuFichierLis.java
 
 ### OPTIONAL RULES ###
 
-run2: Sudoku.class
+run1: Sudoku.class
 	$(JVM) $(JVMFLAGS) -cp .:sudokuBesoin Sudoku
 
-run1: SudokuResolution.class
+run2: SudokuResolution.class 
 	$(JVM) $(JVMFLAGS) -cp .:sudokuBesoin SudokuResolution
-
-SudokuResolution.class: SudokuResolution.java
-	$(JC) $(JCFLAGS) SudokuResolution.java
 
 clean:
 	-rm -f *.class sudokuBesoin/*.class
