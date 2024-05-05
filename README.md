@@ -2,7 +2,7 @@
 
 Ce Sudoku été développé par Amir Kabbouri et Athiran Nagathurai dans le cadre de la SAE lors de notre première année (2023) de BUT Informatique à l'IUT de Fontainebleau.
 
-## Principes généraux
+## Principes généraux :
 
 Une grille de Sudoku est composée de neuf lignes et neufs colonnes. Elle est également divisée en neuf régions couvrant chacune trois lignes et trois colonnes.
 
@@ -42,7 +42,7 @@ make clean
 
 
 
-## Fonctionnalités
+## Fonctionnalités :
 
 ### Fonctionnalités exigées
 
@@ -60,8 +60,9 @@ make clean
   apparaissent dans la grille de départ). En cas de doute, il pourra aussi faire
   temporairement cohabiter jusqu'à quatre chiffres dans une même case (dans ce cas, leschiffres qui cohabitent sont limités par les autres cases, mais ne les contraignent pas en retour). Le joueur sera félicité par le programme lorsque toutes les cases contiendront un chiffre (et un seul).
   
-  Pour une analyse détaillée du projet, veuillez consulter le rapport d'avancement `rapportSudoku Athiran-Amir.pdf`,disponible dans ce dépôt. Ce document inclut des descriptions de fonctionnalités, des diagrammes de structure, et des réflexions 
-  personnelles des auteurs sur le développement du programme.
+  ## Rapport d'avancement :
+  
+  Pour une analyse détaillée du projet, veuillez consulter le rapport d'avancement `SudokuRapport Amir Kabbouri - Athiran Nagathurai.pdf`,disponible dans ce dépôt. Ce document inclut des descriptions de fonctionnalités, des diagrammes de structure, et des réflexions personnelles des auteurs sur le développement du programme.
 
 ### Bibliothèque graphique de l'IUT de Fontainebleau
 
